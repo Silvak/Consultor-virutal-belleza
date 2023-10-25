@@ -9,16 +9,26 @@ the user to the login page. This middleware function is wrapped with the `withAu
 function, which ensures that the user is authenticated before executing the middleware logic. */
 export default withAuth(
 	function middleware(req) {
-		console.log('xd');
+		// Protect admin routes
 		if (
-			adminRoutes.includes(req.nextUrl.pathname) &&
+			req.nextUrl.pathname == 'test1' &&
 			req.nextauth.token?.role != 'admin'
 		) {
-			console.log('hola');
-			return NextResponse.redirect(new URL('/login', req.url));
+			return NextResponse.rewrite(new URL('/login', req.url));
+		}
+
+		// Protect specialist routes
+		if (
+			req.nextUrl.pathname == 'test2' &&
+			req.nextauth.token?.role != 'specialist'
+		) {
+			return NextResponse.rewrite(new URL('/login', req.url));
 		}
 	},
 	{
+		callbacks: {
+			authorized: ({ token }) => !!token,
+		},
 		pages: {
 			signIn: '/login',
 		},

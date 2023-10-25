@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import Modal from '@/components/Modal';
