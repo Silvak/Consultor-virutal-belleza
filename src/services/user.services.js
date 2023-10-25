@@ -1,4 +1,6 @@
-const { apiInstance } = require('./api');
+import { apiInstance } from './api';
+
+console.log(apiInstance);
 
 export const login = (credentials) =>
 	apiInstance.post('/users/login', credentials);

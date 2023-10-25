@@ -1,5 +1,6 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
+import { login } from '@/services/user.services';
 
 export const authOptions = {
 	providers: [
@@ -15,32 +16,35 @@ export const authOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials, req) {
-				// Add logic here to look up the user from the credentials supplied
-				const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
+				console.log(credentials);
+				try {
+					const user = await login(credentials);
 
-				if (user) {
-					// Any object returned will be saved in `user` property of the JWT
-					return user;
-				} else {
-					// If you return null then an error will be displayed advising the user to check their details.
-					return null;
-
-					// You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+					if (user) {
+						// Any object returned will be saved in `user` property of the JWT
+						return user;
+					} else {
+						// An error will be displayed advising the user to check their details.
+						return null;
+					}
+				} catch (e) {
+					console.log(e);
+					throw e;
 				}
 			},
 		}),
 	],
 	callbacks: {
 		async jwt({ token, user }) {
-			console.log('token', token);
-			console.log('user', user);
 			return { ...token, ...user };
 		},
 		async session({ session, token }) {
-			console.log('session', token);
 			session.user = token;
 			return session;
 		},
+	},
+	pages: {
+		signIn: '/login',
 	},
 };
 
