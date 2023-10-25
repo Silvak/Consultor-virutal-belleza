@@ -1,0 +1,23 @@
+import axios from 'axios';
+import { getSession } from 'next-auth/react';
+
+export const BASE_URL = process.env.BASE_URL ?? '/api';
+
+export const apiInstance = axios.create({
+	baseURL: BASE_URL,
+});
+
+apiInstance.defaults.headers.common['Content-Type'] = 'application/json';
+
+export const apiInstanceWithAuth = axios.create({
+	baseURL: BASE_URL,
+});
+
+apiInstanceWithAuth.defaults.headers.common['Content-Type'] =
+	'application/json';
+
+apiInstanceWithAuth.interceptors.request.use(async (request) => {
+	const session = await getSession();
+	request.headers.Authorization = `Bearer ${session?.user?.token}`;
+	return request;
+});
