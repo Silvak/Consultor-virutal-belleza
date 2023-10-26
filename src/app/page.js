@@ -1,5 +1,5 @@
 //import Image from "next/image";
-import "@/styles/global.css";
+import "@/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 
