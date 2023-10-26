@@ -14,8 +14,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Navbar />
+
+        {/* container */}
         <div className="flex justify-center w-full  mt-[56px]">
-          <article className="max-w-[1200px] mx-auto px-4 border-x overflow-hidden">
+          <article className="max-w-[1200px] mx-auto py-8 border-x border-gray-100 overflow-hidden">
             {children}
           </article>
         </div>

@@ -23,7 +23,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 //temporal routes
-const links = [
+export const routes = [
   {
     label: "Home",
     route: "/home",
@@ -44,6 +44,18 @@ const links = [
     label: "Profile",
     route: "/profile",
   },
+  {
+    label: "Register",
+    route: "/register",
+  },
+  {
+    label: "Login",
+    route: "/login",
+  },
+  {
+    label: "Dashboard",
+    route: "/dashboard/admin",
+  },
 ];
 
 /**
@@ -53,7 +65,7 @@ const links = [
  */
 export default function Navbar() {
   return (
-    <header className="fixed top-0 left-0 w-screen h-[56px] border-b border-gray-200 bg-white-50 backdrop-blur-md">
+    <header className="fixed top-0 left-0 w-screen h-[60px] border-b border-gray-200 bg-white-50 backdrop-blur-md">
       <nav className="flex w-full h-full justify-between items-center px-8">
         {/*Logo */}
         <Link href="/home" className="font-semibold">
@@ -64,8 +76,14 @@ export default function Navbar() {
         <NavigationMenu className="sm:hidden md:flex">
           <NavigationMenuList>
             <NavigationMenuItem>
-              {links.map(({ label, route }) => (
-                <Link href={route} legacyBehavior passHref id={route}>
+              {routes.map(({ label, route }) => (
+                <Link
+                  href={route}
+                  legacyBehavior
+                  passHref
+                  id={route}
+                  key={route}
+                >
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     {label}
                   </NavigationMenuLink>
@@ -90,7 +108,7 @@ export default function Navbar() {
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <div>
+              <div className="mb-3">
                 <h3 className="text-lg font-semibold mt-2">Nombre Usuario</h3>
                 <p className="text-sm">user@gmail.com</p>
               </div>
@@ -99,10 +117,11 @@ export default function Navbar() {
             {/* Navigation  */}
             <ul className="flex flex-col gap-2 px-6 py-8 ">
               <h4 className="font-semibold px-2">Menú</h4>
-              {links.map(({ label, route }) => (
+              {routes.map(({ label, route }) => (
                 <li
                   id={route}
-                  className="flex items-center  h-[42px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
+                  key={route}
+                  className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
                 >
                   <Link href={route}>{label}</Link>
                 </li>
