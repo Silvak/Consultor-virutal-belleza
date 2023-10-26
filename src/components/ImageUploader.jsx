@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import axios from 'axios';
 import Modal from '@/components/Modal';
+import { useSession } from 'next-auth/react';
+import { uploadUserImage } from '@/services/user.services';
 
 function ImageUploader({ onImageSelect }) {
 	const fileInputRef = useRef(null);
 	const [uploading, setUploading] = useState(false);
 	const [previewImage, setPreviewImage] = useState(null);
 	const [isModalOpen, setModalOpen] = useState(false);
+	const { data: session, status } = useSession();
 
 	const handleButtonClick = () => {
 		if (fileInputRef.current) {
@@ -24,10 +26,7 @@ function ImageUploader({ onImageSelect }) {
 		formData.append('image', file); // 'image' es el nombre del campo que espera el backend
 
 		try {
-			const response = await axios.post(
-				'http://tu-direccion-backend/api/upload',
-				formData
-			);
+			const response = await uploadUserImage(session.user.id)(formData);
 			console.log(response.data); // respuesta del backend
 		} catch (error) {
 			console.error(
