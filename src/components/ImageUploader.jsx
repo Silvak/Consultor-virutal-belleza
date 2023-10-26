@@ -26,7 +26,7 @@ function ImageUploader({ onImageSelect }) {
 		formData.append('image', file); // 'image' es el nombre del campo que espera el backend
 
 		try {
-			const response = await uploadUserImage(session.user.id)(formData);
+			const response = await uploadUserImage(session.user.user._id)(formData);
 			console.log(response.data); // respuesta del backend
 		} catch (error) {
 			console.error(

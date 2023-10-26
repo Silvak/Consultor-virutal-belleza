@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 
-export const BASE_URL = process.env.BASE_URL ?? '/api/v1';
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? '/api/v1';
 
 // Api instance for endpoints that not require Authorization
 export const apiInstance = axios.create({

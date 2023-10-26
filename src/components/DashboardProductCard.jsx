@@ -1,10 +1,12 @@
+'use client';
+
 import DeleteProductDialog from './DeleteProductDialog';
 import EditProductDialog from './EditProductDialog';
 import { Card } from './ui/card';
 
 function DashboardProductCard({ product }) {
 	return (
-		<Card className="flex gap-2 justify-between p-2 w-3/5 m-auto my-4">
+		<Card className="flex gap-2 justify-between p-2 w-full m-auto my-4">
 			<div className="flex gap-2">
 				<div className="w-28 h-full bg-gray-500 rounded-md"></div>
 				<div className="space-y-1">
@@ -16,7 +18,7 @@ function DashboardProductCard({ product }) {
 			</div>
 			<div>
 				<EditProductDialog product={product} />
-				<DeleteProductDialog id={product.id} />
+				<DeleteProductDialog id={product._id} />
 			</div>
 		</Card>
 	);

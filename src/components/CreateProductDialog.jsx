@@ -18,7 +18,7 @@ import {
 	FormMessage,
 } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createProduct } from '@/services/product.services';
 import { useState } from 'react';
 import { Input } from './ui/input';
@@ -29,6 +29,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from './ui/select';
+import { getCategories } from '@/services/category.services';
 
 const createProductSchema = z.object({
 	name: z.string().min(2, 'Name must contain at least 2 characters'),
@@ -36,6 +37,7 @@ const createProductSchema = z.object({
 		.string()
 		.min(2, 'Description must contain at least 2 characters'),
 	brand: z.string().min(2, 'Brand must contain at least 2 characters'),
+	category: z.string().min(2, 'Category must contain at least 2 characters'),
 	skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
 		required_error: 'You need to select a skin type',
 	}),
@@ -51,6 +53,12 @@ function CreateProductDialog() {
 			brand: '',
 			image: '',
 		},
+	});
+
+	const { data: categoriesData, status: categoriesStatus } = useQuery({
+		queryKey: ['categories'],
+		queryFn: getCategories,
+		select: (data) => data?.data,
 	});
 
 	const queryClient = useQueryClient();
@@ -76,7 +84,7 @@ function CreateProductDialog() {
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
-				<Button>Add Product</Button>
+				<Button className="bg-[#00A7D7] hover:bg-[#00A7D7]">Add Product</Button>
 			</DialogTrigger>
 			<DialogContent className="bg-gray-100">
 				<DialogHeader className="mb-2">
@@ -149,19 +157,23 @@ function CreateProductDialog() {
 							name="category"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Skin type</FormLabel>
+									<FormLabel>Category</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
 									>
 										<FormControl>
 											<SelectTrigger>
-												<SelectValue placeholder="Select a skin type" />
+												<SelectValue placeholder="Select a category" />
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="balanced">Serum</SelectItem>
-											<SelectItem value="oily">Cleanser</SelectItem>
+											{categoriesStatus === 'success' &&
+												categoriesData?.categories.map((category) => (
+													<SelectItem key={category._id} value={category._id}>
+														{category.title}
+													</SelectItem>
+												))}
 										</SelectContent>
 									</Select>
 									<FormMessage />

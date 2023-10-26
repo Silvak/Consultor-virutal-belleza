@@ -12,3 +12,8 @@ export const uploadUserImage = (userId) => (image) =>
 			'Content-Type': 'multipart/form-data',
 		},
 	});
+
+export const deleteUser = (userId) => () =>
+	apiInstanceWithAuth.delete(`/user/${userId}`);
+
+export const getUsers = () => apiInstanceWithAuth.get('/user');

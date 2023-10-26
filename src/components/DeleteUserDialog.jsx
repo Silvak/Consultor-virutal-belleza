@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -13,13 +12,14 @@ import {
 } from './ui/alert-dialog';
 import { Trash } from 'lucide-react';
 import { Button } from './ui/button';
-import { deleteProduct } from '@/services/product.services';
 import { useMutation } from '@tanstack/react-query';
+import { deleteUser } from '@/services/user.services';
+import { useState } from 'react';
 
-function DeleteProductDialog({ id }) {
-	const [isOpen, setIsOpen] = useState(false);
+function DeleteUserDialog({ id }) {
+	const [open, setOpen] = useState(false);
 	const { mutate } = useMutation({
-		mutationFn: deleteProduct(id),
+		mutationFn: deleteUser(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
 		},
@@ -35,7 +35,7 @@ function DeleteProductDialog({ id }) {
 	}
 
 	return (
-		<AlertDialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<AlertDialog open={open} onOpenChange={() => setOpen((prev) => !prev)}>
 			<AlertDialogTrigger asChild>
 				<Button className="bg-transparent text-black hover:bg-slate-300">
 					<Trash className=" h-5 w-5" />
@@ -44,7 +44,7 @@ function DeleteProductDialog({ id }) {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						Are you sure you want to delete this product?
+						Are you sure you want to delete this user?
 					</AlertDialogTitle>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
@@ -61,4 +61,4 @@ function DeleteProductDialog({ id }) {
 	);
 }
 
-export default DeleteProductDialog;
+export default DeleteUserDialog;

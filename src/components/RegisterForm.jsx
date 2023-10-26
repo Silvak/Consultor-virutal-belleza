@@ -16,17 +16,27 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Button } from './ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { signUp } from '@/services/user.services';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from './ui/select';
+import { useRouter } from 'next/navigation';
 
 const registerSchema = z
 	.object({
-		username: z.string().min(2, 'Username must contain at least 8 characters'),
+		displayName: z
+			.string()
+			.min(2, 'displayName must contain at least 8 characters'),
 		email: z.string().email(),
 		password: z
 			.string()
 			.min(8, 'Password must contain at least 8 characters')
 			.max(32),
 		passwordConfirm: z.string(),
-		gender: z.enum(['male', 'female'], {
+		gender: z.enum(['F', 'M'], {
 			required_error: 'You need to select a gender',
 		}),
 		age: z.coerce
@@ -34,6 +44,9 @@ const registerSchema = z
 			.gt(0, { message: 'Age must be greater than 0' })
 			.lt(120, { message: 'Age must be less than 120' })
 			.default(0),
+		skinType: z.enum(['combined', 'oily', 'dry', 'balanced'], {
+			required_error: 'You need to select a skin type',
+		}),
 	})
 	.refine((data) => data.password === data.passwordConfirm, {
 		path: ['passwordConfirm'],
@@ -44,7 +57,7 @@ export default function RegisterForm() {
 	const form = useForm({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
-			username: '',
+			displayName: '',
 			email: '',
 			password: '',
 			passwordConfirm: '',
@@ -55,16 +68,23 @@ export default function RegisterForm() {
 		mutationFn: signUp,
 	});
 
+	const router = useRouter();
+
 	function onSubmit(userData) {
-		mutate(userData, {
-			onSuccess: () => {
-				// handle success
-			},
-			onError: (e) => {
-				//handle error
-				console.log(e);
-			},
-		});
+		console.log(userData);
+		mutate(
+			{ ...userData, passwordConfirm: undefined, rol: 'USER_ROLE' },
+			{
+				onSuccess: () => {
+					// handle success
+					router.push('/login');
+				},
+				onError: (e) => {
+					//handle error
+					console.log(e);
+				},
+			}
+		);
 	}
 
 	return (
@@ -72,7 +92,7 @@ export default function RegisterForm() {
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 				<FormField
 					control={form.control}
-					name="username"
+					name="displayName"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Username</FormLabel>
@@ -164,18 +184,42 @@ export default function RegisterForm() {
 								>
 									<FormItem className="flex items-center space-x-3 space-y-0">
 										<FormControl>
-											<RadioGroupItem value="female" />
+											<RadioGroupItem value="F" />
 										</FormControl>
 										<FormLabel className="font-normal">Female</FormLabel>
 									</FormItem>
 									<FormItem className="flex items-center space-x-3 space-y-0">
 										<FormControl>
-											<RadioGroupItem value="male" />
+											<RadioGroupItem value="M" />
 										</FormControl>
 										<FormLabel className="font-normal">Male</FormLabel>
 									</FormItem>
 								</RadioGroup>
 							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="skinType"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Skin type</FormLabel>
+							<Select onValueChange={field.onChange} defaultValue={field.value}>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue placeholder="Select a skin type" />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									<SelectItem value="balanced">Balanced Skin</SelectItem>
+									<SelectItem value="oily">Oily Skin</SelectItem>
+									<SelectItem value="dry">Dry Skin</SelectItem>
+									<SelectItem value="combined">Combined Skin</SelectItem>
+								</SelectContent>
+							</Select>
 							<FormMessage />
 						</FormItem>
 					)}
