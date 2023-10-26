@@ -51,7 +51,7 @@ export const routes = [
  */
 export default function Navbar() {
   return (
-    <header className="fixed top-0 left-0 w-screen h-[60px] border-b border-gray-200 bg-white-50 backdrop-blur-md">
+    <header className="fixed top-0 left-0 w-screen h-[60px] border-b border-gray-300/50 bg-white-40 backdrop-blur-md">
       <nav className="flex w-full h-full justify-between items-center px-8">
         {/*Logo */}
         <Link href="/home" className="font-semibold">

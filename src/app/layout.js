@@ -1,14 +1,19 @@
+"use client";
+
 import { Inter } from "next/font/google";
 import Navbar from "@/components/navigation/Navbar";
-import "./globals.css";
+//cn components
+import { Toaster } from "@/components/ui/toaster";
+
 //themes
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/CustomThemeProvider";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -24,6 +29,8 @@ export default function RootLayout({ children }) {
               {children}
             </article>
           </div>
+
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
