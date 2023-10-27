@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Providers from '@/app/providers';
 import { getServerSession } from 'next-auth';
+import Navbar from '@/components/navigation/Navbar';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -15,8 +16,14 @@ export default async function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				{'Navigation'}
-				<Providers session={session}>{children}</Providers>
+				<Providers session={session}>
+					<Navbar />
+					<div className="flex justify-center w-full mt-[56px]">
+						<article className="max-w-[1200px] w-full mx-auto px-4 border-x overflow-hidden ">
+							{children}
+						</article>
+					</div>
+				</Providers>
 			</body>
 		</html>
 	);

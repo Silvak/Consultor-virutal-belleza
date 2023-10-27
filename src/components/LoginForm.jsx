@@ -14,6 +14,7 @@ import {
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // Validation schema
 const loginSchema = z.object({
@@ -29,6 +30,7 @@ function LoginForm() {
 			password: '',
 		},
 	});
+	const router = useRouter();
 
 	async function onSubmit(credentials) {
 		const responseNextAuth = await signIn('credentials', {
@@ -42,6 +44,7 @@ function LoginForm() {
 		}
 
 		//handle success
+		router.push('/');
 	}
 
 	return (

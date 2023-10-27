@@ -12,9 +12,14 @@ const handler = NextAuth({
 			},
 			async authorize(credentials) {
 				try {
-					const user = await login(credentials);
+					const user = await login({
+						email: credentials.email,
+						password: credentials.password,
+					});
 
-					return user;
+					console.log(user.data);
+
+					return user.data;
 				} catch (e) {
 					console.log(e);
 					throw e;
