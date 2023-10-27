@@ -7,21 +7,38 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
-import DashboardProductCard from './DashboardProductCard';
 import { Card } from './ui/card';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Label } from './ui/label';
+import RecommendProductCard from './RecommendProductCard';
 
 function UserDialog({ user }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [search, setSearch] = useState('');
+	const [selectedProducts, setSelectedProducts] = useState([]);
 	const { data: productsData, status: productsStatus } = useQuery({
-		queryKey: ['products', { limit: 10 }],
+		queryKey: ['products', { limit: 3 }],
 		queryFn: () =>
 			getProducts({
-				limit: 10,
+				limit: 3,
 			}),
 	});
 
+	// const debouncedSearch = useDebounce(search, 500);
+
 	const swiperRef = useRef();
+
+	function toggleSelected(id) {
+		setSelectedProducts((prev) => {
+			if (prev.includes(id)) {
+				return prev.filter((p) => p !== id);
+			} else {
+				return [...prev, id];
+			}
+		});
+	}
 
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
@@ -43,8 +60,8 @@ function UserDialog({ user }) {
 					</div>
 				</div>
 				{productsStatus == 'success' && (
-					<div>
-						<h1>Skin Care History</h1>
+					<div className="space-y-4 mt-4">
+						<h1 className=" font-semibold">Skin Care History</h1>
 
 						<div className="flex items-center gap-2">
 							<button onClick={() => swiperRef.current?.slidePrev()}>
@@ -55,29 +72,13 @@ function UserDialog({ user }) {
 									swiperRef.current = swiper;
 								}}
 								spaceBetween={10}
-								slidesPerView={2}
+								slidesPerView={3}
 								modules={[Navigation]}
-								className="mySwiper w-[400px] flex gap-2"
+								className="mySwiper w-[300px] md:w-[400px] flex gap-2"
 							>
 								{productsData?.products?.map((product) => (
 									<SwiperSlide key={product._id}>
-										<Card className="flex  flex-col gap-2 justify-between p-2 w-5/6 m-auto my-4">
-											<div className="w-full h-20 bg-gray-500 rounded-md"></div>
-											<div className="space-y-1">
-												<p className="text-lg font-semibold text-slate-900">
-													{product.name}
-												</p>
-												<p className="text-md font-medium text-slate-800">
-													{product.brand}
-												</p>
-												<p className="text-sm text-slate-700">
-													{product.description}
-												</p>
-												<p className="text-sm text-slate-700">
-													{product.ingredients}
-												</p>
-											</div>
-										</Card>
+										<div className="w-full h-24 bg-gray-500 rounded-md"></div>
 									</SwiperSlide>
 								))}
 							</Swiper>
@@ -87,6 +88,36 @@ function UserDialog({ user }) {
 						</div>
 					</div>
 				)}
+
+				<div className="w-full space-y-4 mt-4">
+					<h1 className=" font-semibold">Recommendations</h1>
+					<div className="flex items-center gap-4 ">
+						<div className="flex items-center gap-2 w-full">
+							<Input
+								type="text"
+								id="search"
+								value={search}
+								onChange={(e) => setSearch(e.target.value)}
+								className="border-none focus-visible:ring-0 h-fit p-1"
+							/>
+							<Label htmlFor="search">
+								<Search className="text-gray-400" />
+							</Label>
+						</div>
+
+						<Button className="px-4 py-2 h-fit rounded-xl">Enviar</Button>
+					</div>
+					<div>
+						{productsData?.products?.map((product) => (
+							<RecommendProductCard
+								key={product._id}
+								product={product}
+								onClick={toggleSelected}
+								selected={selectedProducts.includes(product._id)}
+							/>
+						))}
+					</div>
+				</div>
 			</DialogContent>
 		</Dialog>
 	);

@@ -67,6 +67,7 @@ function CreateProductDialog() {
 		mutationFn: createProduct,
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
+			setIsOpen(false);
 		},
 	});
 

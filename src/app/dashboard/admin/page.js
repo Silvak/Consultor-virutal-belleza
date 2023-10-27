@@ -37,17 +37,17 @@ const specialists = [
 
 export default function Page() {
 	const [pageNumber, setPageNumber] = useState(1);
+	const [limit, setLimit] = useState(3);
 	const onPageChange = (page) => setPageNumber(page);
-	const limit = 2;
-	const offset =
-		(pageNumber - 1) * limit > 0 ? (pageNumber - 1) * limit : undefined;
+
+	console.log(pageNumber);
 
 	const { data: productsData, status } = useQuery({
-		queryKey: ['products', limit, offset],
+		queryKey: ['products', limit, pageNumber],
 		queryFn: () =>
 			getProducts({
 				limit,
-				offset,
+				offset: pageNumber,
 			}),
 	});
 
