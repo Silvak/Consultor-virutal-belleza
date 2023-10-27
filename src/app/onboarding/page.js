@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import skin from "../../../public/assets/skin.jpg";
+import skin from "../../../public/assets/skin.jpeg";
+import React from "react";
 
 export default function Onboarding() {
   return (
@@ -28,7 +29,7 @@ export default function Onboarding() {
       </div>
       <div
         className="flex-1 bg-cover bg-center opacity-4"
-        style={{ backgroundImage: `url(/assets/skin.jpg)` }}
+        style={{ backgroundImage: `url(/assets/skin.jpeg)` }}
       ></div>
     </div>
   );

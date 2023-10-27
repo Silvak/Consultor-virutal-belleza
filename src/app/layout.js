@@ -1,29 +1,35 @@
-"use client";
-
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
-import Navbar from "@/components/navigation/Navbar";
 
 //themes
 import { ThemeProvider } from "@/components/CustomThemeProvider";
 import "./globals.css";
+import Providers from "@/app/providers";
+import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-export default function RootLayout({ children }) {
-  return (
-    <html lang="es">
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="Light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
+export const metadata = {
+  title: "Consultor belleza virtual",
+  description: "",
+};
 
-          <Toaster />
-        </ThemeProvider>
+export default async function RootLayout({ children }) {
+  const session = await getServerSession();
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <Providers session={session}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

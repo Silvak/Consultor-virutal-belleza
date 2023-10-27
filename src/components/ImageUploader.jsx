@@ -1,12 +1,14 @@
+'use client';
+
 import React, { useRef, useState } from 'react';
-import axios from 'axios';
-import Modal from '@/components/Modal';
+import { useSession } from 'next-auth/react';
+import { uploadUserImage } from '@/services/user.services';
 
 function ImageUploader({ onImageSelect }) {
 	const fileInputRef = useRef(null);
 	const [uploading, setUploading] = useState(false);
 	const [previewImage, setPreviewImage] = useState(null);
-	const [isModalOpen, setModalOpen] = useState(false);
+	const { data: session, status } = useSession();
 
 	const handleButtonClick = () => {
 		if (fileInputRef.current) {
@@ -17,15 +19,12 @@ function ImageUploader({ onImageSelect }) {
 	const sendImageToBackend = async (file) => {
 		setUploading(true);
 
-		// Crear un objeto FormData para enviar la imagen al backend
+		
 		const formData = new FormData();
-		formData.append('image', file); // 'image' es el nombre del campo que espera el backend
+		formData.append('image', file); 
 
 		try {
-			const response = await axios.post(
-				'http://tu-direccion-backend/api/upload',
-				formData
-			);
+			const response = await uploadUserImage(session.user.user._id)(formData);
 			console.log(response.data); // respuesta del backend
 		} catch (error) {
 			console.error(
@@ -78,20 +77,6 @@ function ImageUploader({ onImageSelect }) {
 			>
 				{uploading ? 'Cargando...' : 'Cargar Foto'}
 			</button>
-			{/* Prueba del modal.
-      <button
-          onClick={() => setModalOpen(true)}
-          className="px-4 py-2 w-[384px] bg-white text-custom-blue rounded-md shadow-md mt-5"
-        >
-          Mostrar detalles del producto
-        </button>
-        <div>
-        {/* <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-          <h2 className="text-xl font-bold mb-2">Titulo</h2>
-          <p className="text-gray-600">Calificacion...</p>
-          
-      </Modal>  
-      </div> */}
 		</div>
 	);
 }

@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 /**
  * The `SidebarContent` function is a React component that renders the content of a sidebar, including
@@ -10,7 +11,9 @@ import { Button } from "@/components/ui/button";
  * multiple child elements inside. The structure of the returned JSX is as follows:
  */
 export default function SidebarContent({ routes }) {
-  //logic
+  const { data: session } = useSession();
+
+  console.log(session);
   return (
     <div className="relative h-full w-full">
       {/* User*/}
@@ -41,7 +44,9 @@ export default function SidebarContent({ routes }) {
 
       {/* Logout */}
       <div className="absolute bottom-0  w-full flex justify-left items-center border-t border-gray-200 px-8 py-4">
-        <Button variant="outline">Logout</Button>
+        <Button variant="outline" onClick={() => signOut()}>
+          Logout
+        </Button>
       </div>
     </div>
   );
