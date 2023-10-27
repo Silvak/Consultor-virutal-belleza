@@ -1,4 +1,5 @@
 import DeleteUserDialog from './DeleteUserDialog';
+import UserDialog from './UserDialog';
 import { Card } from './ui/card';
 
 function DashboardUserCard({ user }) {
@@ -7,9 +8,7 @@ function DashboardUserCard({ user }) {
 			<div className="flex gap-2">
 				<div className="w-28 h-full bg-gray-500 rounded-md"></div>
 				<div className="space-y-1">
-					<p className="text-lg font-semibold text-slate-900">
-						{user.displayName}
-					</p>
+					<UserDialog user={user} />
 					<p className="text-md font-medium text-slate-800">{user.email}</p>
 					<p className="text-sm text-slate-700">{user.skinType}</p>
 				</div>

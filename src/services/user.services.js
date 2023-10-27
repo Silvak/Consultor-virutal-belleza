@@ -17,3 +17,5 @@ export const deleteUser = (userId) => () =>
 	apiInstanceWithAuth.delete(`/user/${userId}`);
 
 export const getUsers = () => apiInstanceWithAuth.get('/user');
+
+export const getUser = (userId) => apiInstanceWithAuth.get(`/user/${userId}`);

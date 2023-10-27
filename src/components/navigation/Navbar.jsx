@@ -54,6 +54,7 @@ const links = [
  */
 export default function Navbar() {
 	const { data: session } = useSession();
+
 	console.log(session);
 	return (
 		<header className="fixed top-0 left-0 w-screen h-[56px] border-b border-gray-200 bg-white-50 backdrop-blur-md">

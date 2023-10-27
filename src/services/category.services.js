@@ -10,3 +10,6 @@ export const deleteCategory = (categoryId) => () =>
 	apiInstanceWithAuth.delete(`/category/${categoryId}`);
 
 export const getCategories = () => apiInstanceWithAuth.get('/category');
+
+export const getCategory = (categoryId) =>
+	apiInstanceWithAuth.get(`/category/${categoryId}`);

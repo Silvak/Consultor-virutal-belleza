@@ -9,4 +9,13 @@ export const editProduct = (productId) => (productData) =>
 export const deleteProduct = (productId) => () =>
 	apiInstanceWithAuth.delete(`/product/${productId}`);
 
-export const getProducts = () => apiInstanceWithAuth.get('/product');
+export const getProducts = async ({ limit, offset }) => {
+	const data = await apiInstanceWithAuth.get('/product', {
+		params: { limit, offset },
+	});
+
+	return data.data;
+};
+
+export const getProduct = (productId) =>
+	apiInstanceWithAuth.get(`/product/${productId}`);

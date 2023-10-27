@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 
-const adminRoutes = [];
-
 /* The code is exporting a middleware function that checks if the requested URL path is included in the
 `adminRoutes` array and if the user's role is not 'admin'. If both conditions are true, it redirects
 the user to the login page. This middleware function is wrapped with the `withAuth` higher-order
@@ -10,9 +8,11 @@ function, which ensures that the user is authenticated before executing the midd
 export default withAuth(
 	function middleware(req) {
 		// Protect admin routes
+		console.log(req.nextUrl.pathname);
+		console.log('this is it', req.nextauth);
 		if (
-			req.nextUrl.pathname == 'test1' &&
-			req.nextauth.token?.role != 'admin'
+			req.nextUrl.pathname == '/dashboard/admin' &&
+			req.nextauth.token.user.rol != 'ADMIN_ROLE'
 		) {
 			return NextResponse.rewrite(new URL('/login', req.url));
 		}
@@ -20,10 +20,12 @@ export default withAuth(
 		// Protect specialist routes
 		if (
 			req.nextUrl.pathname == 'test2' &&
-			req.nextauth.token?.role != 'specialist'
+			req.nextauth.token.user.role != 'specialist'
 		) {
 			return NextResponse.rewrite(new URL('/login', req.url));
 		}
+
+		return NextResponse.next();
 	},
 	{
 		callbacks: {
