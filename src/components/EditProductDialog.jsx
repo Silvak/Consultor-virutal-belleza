@@ -76,7 +76,7 @@ function EditProductDialog({ product }) {
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
-				<Button className="bg-transparent text-black hover:bg-slate-300">
+				<Button className="bg-transparent text-black hover:bg-slate-300 dark:text-slate-200">
 					<Pencil className="h-5 w-5" />
 				</Button>
 			</DialogTrigger>

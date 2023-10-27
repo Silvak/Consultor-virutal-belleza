@@ -35,11 +35,15 @@ const Pagination = (props) => {
 				className={`w-fit ${
 					currentPage === 1
 						? ' hover:bg-transparent hover:cursor-default'
-						: 'py-0 px-1 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs hover:cursor-pointer hover:bg-slate-500'
+						: 'py-0 px-1 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs hover:cursor-pointer hover:bg-slate-500 dark:text-slate-200'
 				}`}
 			>
 				<ChevronLeft
-					className={currentPage === 1 ? 'text-gray-500' : 'text-black'}
+					className={
+						currentPage === 1
+							? 'text-gray-500'
+							: 'text-black dark:text-slate-200'
+					}
 				/>
 			</li>
 			{paginationRange.map((pageNumber) => {
@@ -47,7 +51,7 @@ const Pagination = (props) => {
 				if (pageNumber === '...') {
 					return (
 						<li
-							className="w-fit py-0 px-1 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs  bg-transparent"
+							className="w-fit py-0 px-1 h-8 text-center mx-auto my-1 text-black dark:text-slate-200 flex items-center rounded-xl text-xs  bg-transparent"
 							key={pageNumber}
 						>
 							&#8230;
@@ -59,8 +63,10 @@ const Pagination = (props) => {
 				return (
 					<li
 						onClick={() => onPageChange(Number(pageNumber))}
-						className={`w-fit p-4 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs hover:cursor-pointer  ${
-							pageNumber === currentPage ? 'bg-gray-300' : 'hover:bg-slate-500'
+						className={`w-fit p-4 h-8 text-center mx-auto my-1 text-black dark:text-slate-200 flex items-center rounded-xl text-xs hover:cursor-pointer  ${
+							pageNumber === currentPage
+								? 'bg-gray-300 dark:bg-gray-700'
+								: 'hover:bg-slate-500'
 						}`}
 						key={pageNumber}
 					>
@@ -78,7 +84,11 @@ const Pagination = (props) => {
 				}`}
 			>
 				<ChevronRight
-					className={currentPage === lastPage ? 'text-gray-500' : 'text-black'}
+					className={
+						currentPage === lastPage
+							? 'text-gray-500'
+							: 'text-black dark:text-slate-200'
+					}
 				/>
 			</li>
 		</ul>

@@ -37,7 +37,7 @@ function DeleteUserDialog({ id }) {
 	return (
 		<AlertDialog open={open} onOpenChange={() => setOpen((prev) => !prev)}>
 			<AlertDialogTrigger asChild>
-				<Button className="bg-transparent text-black hover:bg-slate-300">
+				<Button className="bg-transparent text-black hover:bg-slate-300 dark:text-slate-200">
 					<Trash className=" h-5 w-5" />
 				</Button>
 			</AlertDialogTrigger>
