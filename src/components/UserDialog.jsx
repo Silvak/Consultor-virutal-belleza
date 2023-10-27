@@ -43,7 +43,7 @@ function UserDialog({ user }) {
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
-				<p className="text-lg font-semibold text-slate-900 cursor-pointer">
+				<p className="text-lg font-semibold text-slate-900 dark:text-slate-200 cursor-pointer">
 					{user.displayName}
 				</p>
 			</DialogTrigger>
@@ -52,11 +52,15 @@ function UserDialog({ user }) {
 				<div className="flex gap-2">
 					<div className="w-28 h-full bg-gray-500 rounded-md"></div>
 					<div className="space-y-1">
-						<p className="text-lg font-semibold text-slate-900">
+						<p className="text-lg font-semibold text-slate-900 dark:text-slate-200">
 							{user.displayName}
 						</p>
-						<p className="text-md font-medium text-slate-800">{user.email}</p>
-						<p className="text-sm text-slate-700">{user.skinType}</p>
+						<p className="text-md font-medium text-slate-800 dark:text-slate-200">
+							{user.email}
+						</p>
+						<p className="text-sm text-slate-700 dark:text-slate-200">
+							{user.skinType}
+						</p>
 					</div>
 				</div>
 				{productsStatus == 'success' && (

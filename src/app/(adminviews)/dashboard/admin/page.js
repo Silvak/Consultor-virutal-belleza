@@ -40,8 +40,6 @@ export default function Page() {
 	const [limit, setLimit] = useState(3);
 	const onPageChange = (page) => setPageNumber(page);
 
-	console.log(pageNumber);
-
 	const { data: productsData, status } = useQuery({
 		queryKey: ['products', limit, pageNumber],
 		queryFn: () =>

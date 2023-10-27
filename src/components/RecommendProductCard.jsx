@@ -10,8 +10,12 @@ function RecommendProductCard({ product, onClick, selected }) {
 		>
 			<div className="w-24 h-16 bg-gray-500 rounded-md"></div>
 			<div className="space-y-1">
-				<p className="text-base font-semibold text-slate-900">{product.name}</p>
-				<p className="text-sm font-medium text-slate-800">{product.brand}</p>
+				<p className="text-base font-semibold text-slate-900 dark:text-slate-200">
+					{product.name}
+				</p>
+				<p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+					{product.brand}
+				</p>
 			</div>
 		</Card>
 	);

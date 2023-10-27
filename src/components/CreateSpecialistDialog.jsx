@@ -85,7 +85,7 @@ function CreateSpecialistDialog() {
 					Add Specialist
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-gray-100">
+			<DialogContent>
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
 						Add Specialist

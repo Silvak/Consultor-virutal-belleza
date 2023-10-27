@@ -87,7 +87,7 @@ function CreateProductDialog() {
 			<DialogTrigger asChild>
 				<Button className="bg-[#00A7D7] hover:bg-[#00A7D7]">Add Product</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-gray-100">
+			<DialogContent>
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
 						Add Product
