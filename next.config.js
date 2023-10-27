@@ -5,10 +5,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/",
+        source: "/old-route",
         destination: "/home",
         permanent: true,
       },
+      // ... oter redirections
     ];
   },
   experimental: {
