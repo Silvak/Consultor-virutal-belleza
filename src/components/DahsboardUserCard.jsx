@@ -12,7 +12,9 @@ function DashboardUserCard({ user }) {
 					<p className="text-md font-medium text-slate-800 dark:text-slate-200">
 						{user.email}
 					</p>
-					<p className="text-sm text-slate-300">{user.skinType}</p>
+					<p className="text-sm text-slate-800 dark:text-slate-300">
+						{user.skinType}
+					</p>
 				</div>
 			</div>
 			<div>

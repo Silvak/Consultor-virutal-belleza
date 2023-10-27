@@ -19,3 +19,13 @@ export const getProducts = async ({ limit, offset }) => {
 
 export const getProduct = (productId) =>
 	apiInstanceWithAuth.get(`/product/${productId}`);
+
+export const uploadProductImage = (productId, formData) =>
+	apiInstanceWithAuth.post(`/files/product/${productId}`, formData, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});
+
+export const getProductImage = (productImage) =>
+	apiInstanceWithAuth.get(`/files/product/${productImage}`);

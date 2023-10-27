@@ -19,7 +19,7 @@ import {
 } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createProduct } from '@/services/product.services';
+import { createProduct, uploadProductImage } from '@/services/product.services';
 import { useState } from 'react';
 import { Input } from './ui/input';
 import {
@@ -30,18 +30,25 @@ import {
 	SelectValue,
 } from './ui/select';
 import { getCategories } from '@/services/category.services';
+import { Image } from 'lucide-react';
 
-const createProductSchema = z.object({
-	name: z.string().min(2, 'Name must contain at least 2 characters'),
-	description: z
-		.string()
-		.min(2, 'Description must contain at least 2 characters'),
-	brand: z.string().min(2, 'Brand must contain at least 2 characters'),
-	category: z.string().min(2, 'Category must contain at least 2 characters'),
-	skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
-		required_error: 'You need to select a skin type',
-	}),
-});
+const createProductSchema = z
+	.object({
+		name: z.string().min(2, 'Name must contain at least 2 characters'),
+		description: z
+			.string()
+			.min(2, 'Description must contain at least 2 characters'),
+		brand: z.string().min(2, 'Brand must contain at least 2 characters'),
+		category: z.string().min(2, 'Category must contain at least 2 characters'),
+		skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
+			required_error: 'You need to select a skin type',
+		}),
+		image: z.any(),
+	})
+	.refine((data) => !!data.image, {
+		path: ['image'],
+		message: 'You need to provide an image',
+	});
 
 function CreateProductDialog() {
 	const [isOpen, setIsOpen] = useState(false);
@@ -51,9 +58,9 @@ function CreateProductDialog() {
 			name: '',
 			description: '',
 			brand: '',
-			image: '',
 		},
 	});
+	const [previewImage, setPreviewImage] = useState(null);
 
 	const { data: categoriesData, status: categoriesStatus } = useQuery({
 		queryKey: ['categories'],
@@ -67,19 +74,37 @@ function CreateProductDialog() {
 		mutationFn: createProduct,
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
-			setIsOpen(false);
 		},
 	});
 
 	function onSubmit(productData) {
-		mutate(productData, {
-			onSuccess: () => {
-				form.reset();
+		mutate(
+			{
+				name: productData.name,
+				description: productData.description,
+				brand: productData.brand,
+				category: productData.category,
+				skinTypeProduct: productData.skinTypeProduct,
 			},
-			onError: (error) => {
-				console.log(error);
-			},
-		});
+			{
+				onSuccess: async (data) => {
+					try {
+						const formData = new FormData();
+						console.log(productData.image);
+						formData.append('image', productData.image, productData.image.name);
+						console.log(formData);
+						await uploadProductImage(data.data._id, formData);
+						form.reset();
+						setIsOpen(false);
+					} catch (e) {
+						console.log(e);
+					}
+				},
+				onError: (error) => {
+					console.log(error);
+				},
+			}
+		);
 	}
 
 	return (
@@ -95,7 +120,63 @@ function CreateProductDialog() {
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="flex flex-col gap-2 justify-center"
+					>
+						<FormField
+							control={form.control}
+							name="image"
+							render={({ field: { name, value, disabled, onChange } }) => (
+								<FormItem className="w-full h-fit flex justify-center">
+									<FormLabel className="flex flex-col gap-4 justify-center items-center">
+										<div className="flex flex-col items-center justify-center h-fit">
+											<div
+												className={`flex-grow flex flex-col gap-2 items-center relative w-40 h-32 rounded-lg mb-4 bg-gray-100  ${
+													previewImage && 'shadow-lg border'
+												}`}
+												style={{
+													backgroundImage: `url(${previewImage})`,
+													backgroundSize: 'contain',
+													backgroundPosition: 'center',
+													backgroundRepeat: 'no-repeat',
+												}}
+											>
+												{!previewImage && (
+													<>
+														<p className="text-gray-500 font-medium w-fit">
+															Upload product image
+														</p>
+														<div className="w-32 h-28 flex items-center justify-center rounded-xl border-4 border-dotted border-gray-500 cursor-pointer">
+															<Image className="text-gray-500 w-12 h-12" />
+														</div>
+													</>
+												)}
+											</div>
+										</div>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="file"
+											className="bg-gray-200 hidden"
+											onChange={(e) => {
+												if (e.target.files) {
+													onChange(e.target.files[0]);
+													const imageUrl = URL.createObjectURL(
+														e.target.files[0]
+													);
+													setPreviewImage(imageUrl);
+												}
+											}}
+											name={name}
+											value={value?.filename}
+											disabled={disabled}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="name"
@@ -105,7 +186,7 @@ function CreateProductDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none "
+											className="border-none focus-visible:ring-1"
 											placeholder="Name"
 											{...field}
 										/>
@@ -124,7 +205,7 @@ function CreateProductDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Description"
 											{...field}
 										/>
@@ -143,7 +224,7 @@ function CreateProductDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Brand"
 											{...field}
 										/>
@@ -164,7 +245,7 @@ function CreateProductDialog() {
 										defaultValue={field.value}
 									>
 										<FormControl>
-											<SelectTrigger>
+											<SelectTrigger className="border-none focus:ring-1">
 												<SelectValue placeholder="Select a category" />
 											</SelectTrigger>
 										</FormControl>
@@ -193,7 +274,7 @@ function CreateProductDialog() {
 										defaultValue={field.value}
 									>
 										<FormControl>
-											<SelectTrigger>
+											<SelectTrigger className="border-none focus:ring-1">
 												<SelectValue placeholder="Select a skin type" />
 											</SelectTrigger>
 										</FormControl>
