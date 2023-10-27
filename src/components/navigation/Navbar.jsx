@@ -23,12 +23,16 @@ export const routes = [
     route: "/products",
   },
   {
-    label: "Upload",
+    label: "Consult",
     route: "/upload",
   },
   {
     label: "Profile",
     route: "/profile",
+  },
+  {
+    label: "Dashboard",
+    route: "/dashboard/admin",
   },
   {
     label: "Register",
@@ -37,10 +41,6 @@ export const routes = [
   {
     label: "Login",
     route: "/login",
-  },
-  {
-    label: "Dashboard",
-    route: "/dashboard/admin",
   },
 ];
 

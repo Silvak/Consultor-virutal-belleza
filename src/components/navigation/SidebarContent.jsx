@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 /**
  * The `SidebarContent` function is a React component that renders the content of a sidebar, including

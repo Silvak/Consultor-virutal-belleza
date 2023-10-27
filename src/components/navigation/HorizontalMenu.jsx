@@ -16,7 +16,7 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
  */
 export default function HorizontalMenu({ routes }) {
   return (
-    <NavigationMenu className="sm:hidden md:flex">
+    <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList>
         <NavigationMenuItem>
           {routes.map(({ label, route }) => (
