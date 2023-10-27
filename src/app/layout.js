@@ -26,11 +26,7 @@ export default async function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex justify-center w-full mt-[56px]">
-              <article className="max-w-[1200px] w-full mx-auto px-4 border-x overflow-hidden ">
-                {children}
-              </article>
-            </div>
+            {children}
             <Toaster />
           </ThemeProvider>
         </Providers>
