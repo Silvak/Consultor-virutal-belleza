@@ -1,6 +1,6 @@
 'use client';
 
-import { getProductImgSrc } from '@/lib/utils';
+import { getImgSrc } from '@/lib/utils';
 import DeleteProductDialog from './DeleteProductDialog';
 import EditProductDialog from './EditProductDialog';
 import { Card } from './ui/card';
@@ -12,11 +12,11 @@ function DashboardProductCard({ product }) {
 				{product.img != 'no-posee-imagen' ? (
 					<img
 						alt={product.name}
-						src={getProductImgSrc(product.img)}
-						className="w-28 h-full"
+						src={getImgSrc('product', product.img)}
+						className="w-28 h-28 rounded-md object-center object-contain"
 					/>
 				) : (
-					<div className="w-28 h-full bg-gray-500 rounded-md"></div>
+					<div className="w-28 h-20 bg-gray-500 rounded-md"></div>
 				)}
 
 				<div className="space-y-1">
@@ -30,7 +30,7 @@ function DashboardProductCard({ product }) {
 						{product.description}
 					</p>
 					<p className="text-sm text-slate-700 dark:text-slate-300">
-						{product.ingredients}
+						{product.skinTypeProduct} skin
 					</p>
 				</div>
 			</div>

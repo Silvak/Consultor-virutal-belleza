@@ -10,7 +10,7 @@ function DashboardSpecialistCard({ specialist, variant = 'secondary' }) {
 				<div
 					className={`${
 						variant == 'secondary' ? 'w-28' : 'w-40 h-32'
-					} w-28 h-full bg-gray-500 rounded-md`}
+					} w-28 h-28 bg-gray-500 rounded-md`}
 				></div>
 				<div className="space-y-1">
 					<p className="text-lg font-semibold text-slate-900 dark:text-slate-200">

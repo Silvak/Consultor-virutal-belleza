@@ -16,6 +16,12 @@ export const uploadUserImage = (userId) => (image) =>
 export const deleteUser = (userId) => () =>
 	apiInstanceWithAuth.delete(`/user/${userId}`);
 
-export const getUsers = () => apiInstanceWithAuth.get('/user');
+export const getUsers = async ({ limit, offset }) => {
+	const data = await apiInstanceWithAuth.get('/user', {
+		params: { limit, offset },
+	});
+
+	return data.data;
+};
 
 export const getUser = (userId) => apiInstanceWithAuth.get(`/user/${userId}`);
