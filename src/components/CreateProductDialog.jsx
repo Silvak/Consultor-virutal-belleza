@@ -188,7 +188,7 @@ function CreateProductDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none focus-visible:ring-1"
+											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
 											placeholder="Name"
 											{...field}
 										/>
@@ -207,7 +207,7 @@ function CreateProductDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none focus-visible:ring-1"
+											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
 											placeholder="Description"
 											{...field}
 										/>
@@ -226,7 +226,7 @@ function CreateProductDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none focus-visible:ring-1"
+											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
 											placeholder="Brand"
 											{...field}
 										/>
