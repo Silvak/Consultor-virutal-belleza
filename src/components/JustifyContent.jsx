@@ -1,9 +1,14 @@
 import React from "react";
 
+/**
+ * The `JustifyContent` function is a React component that renders an article element with flexbox
+ * properties to center its content horizontally and vertically, and allows for customizing the width
+ * and background color.
+ */
 export default function JustifyContent({ width = 1200, children }) {
   return (
-    <div className="flex justify-center w-full">
-      <div className={`w-[1200px] py-16`}>{children}</div>
-    </div>
+    <article className={`flex justify-center items-center w-full`}>
+      <div style={{ maxWidth: width }}>{children}</div>
+    </article>
   );
 }

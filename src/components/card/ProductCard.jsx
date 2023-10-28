@@ -15,7 +15,7 @@ import { AiOutlineHeart, AiOutlineStar } from "react-icons/ai";
 export default function ProductCard({ product }) {
   return (
     <Card className="shadow-lg cursor-pointer hover:border-[#7E8EFF]">
-      <div className="px-6 pt-6">
+      <div className="px-6 pt-6 w-full">
         <Image
           src={"/assets/productTest.webp" || "/assets/palceholder.png"}
           alt="Picture of the product"
@@ -30,11 +30,9 @@ export default function ProductCard({ product }) {
           <CardTitle>{product.name}</CardTitle>
           <p>{product.brand}</p>
           <div className="flex gap-1 mt-1">
-            <AiOutlineStar className="text-[24px]" />
-            <AiOutlineStar className="text-[24px]" />
-            <AiOutlineStar className="text-[24px]" />
-            <AiOutlineStar className="text-[24px]" />
-            <AiOutlineStar className="text-[24px]" />
+            {[...Array(5)].map((_, index) => (
+              <AiOutlineStar key={index} className="text-xl md:text-[24px]" />
+            ))}
           </div>
         </div>
         <div className="">

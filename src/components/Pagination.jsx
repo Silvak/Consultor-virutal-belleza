@@ -26,7 +26,6 @@ const Pagination = (props) => {
   const onNext = () => {
     if (currentPage < totalPageCount) onPageChange(currentPage + 1);
   };
-
   const onPrevious = () => {
     if (currentPage > 1) onPageChange(currentPage - 1);
   };
@@ -34,7 +33,7 @@ const Pagination = (props) => {
   let lastPage = paginationRange[paginationRange?.length - 1];
 
   return (
-    <ul className="flex list-none items-center justify-between w-fit gap-2 m-auto bg-white dark:bg-inherit shadow-md rounded-md px-2 py-2 border border-gray-200 dark:border-gray-200/20">
+    <ul className="flex list-none items-center justify-between w-fit gap-2 m-auto bg-white dark:bg-[#020817]  shadow-md rounded-md px-2 py-2 border border-gray-200 dark:border-gray-200/20">
       {/* Left navigation arrow */}
       <li
         onClick={onPrevious}
@@ -45,7 +44,9 @@ const Pagination = (props) => {
         }`}
       >
         <ChevronLeft
-          className={currentPage === 1 ? "text-gray-500" : "text-black"}
+          className={
+            currentPage === 1 ? "text-gray-500" : "text-black dark:text-white"
+          }
         />
       </li>
 
@@ -66,9 +67,9 @@ const Pagination = (props) => {
         return (
           <li
             onClick={() => onPageChange(Number(pageNumber))}
-            className={`flex justify-center items-center h-[40px] w-[40px]  text-black rounded-md text-sm hover:cursor-pointer  ${
+            className={`flex justify-center items-center h-[40px] w-[40px]  text-black dark:text-white rounded-md text-sm hover:cursor-pointer  ${
               pageNumber === currentPage
-                ? "bg-[#7E8EFF]/50"
+                ? "bg-[#7E8EFF]/50 "
                 : "hover:bg-[#7E8EFF]/50"
             }`}
             key={pageNumber}
@@ -88,7 +89,11 @@ const Pagination = (props) => {
         }`}
       >
         <ChevronRight
-          className={currentPage === lastPage ? "text-gray-500" : "text-black"}
+          className={
+            currentPage === lastPage
+              ? "text-gray-500"
+              : "text-black dark:text-white"
+          }
         />
       </li>
     </ul>

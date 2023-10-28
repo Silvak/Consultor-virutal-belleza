@@ -13,7 +13,7 @@ import {
 
 export default function CategoryCard({ Category }) {
   return (
-    <Card className="flex flex-col justify-center items-center gap-2 shadow-lg cursor-pointer hover:border-[#7E8EFF] w-[132px] h-[132px] p-6">
+    <Card className="flex flex-col justify-center items-center gap-2 shadow-lg cursor-pointer hover:border-[#7E8EFF] lg:w-[132px] h-[132px] p-6">
       <div className="">
         <Image
           src={"/assets/vECTOR.PNG" || "/assets/palceholder.png"}

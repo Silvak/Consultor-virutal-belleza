@@ -79,13 +79,12 @@ export default function Page() {
       }),
   });
 
-  //console.log(productsData);
-
   return (
     <div className="flex flex-wrap">
-      <article className="flex items-center w-full h-[75vh]">
-        <JustifyContent>
-          <div className="grid grid-cols-2">
+      {/* hero */}
+      <section className="flex items-center w-full h-[75vh] px-4">
+        <JustifyContent width={1200}>
+          <div className="grid grid-cols-2 w-full">
             <div className="flex flex-col justify-center w-full gap-4">
               <h1 className="text-5xl font-bold">Piensa.</h1>
               <h1 className="text-5xl font-bold">Siente.</h1>
@@ -95,23 +94,23 @@ export default function Page() {
                 Comenzar
               </Button>
             </div>
-            <div className="bg-gray-200 rounded-md">
+            <div className=" rounded-md">
               <Image
                 src="/assets/face.jpg"
-                className="w-full object-cover rounded-lg"
+                className=" hidden md:flex w-full object-cover rounded-lg"
                 width={500}
                 height={500}
               />
             </div>
           </div>
         </JustifyContent>
-      </article>
+      </section>
 
       {/* products */}
-      <article className="w-full bg-gray-100">
-        <JustifyContent className="w-[1200px]">
+      <section className="w-full bg-gray-100 dark:bg-opacity-10 py-16 px-4">
+        <JustifyContent width={1200}>
           <h3 className="text-2xl mb-6 font-semibold">Categortíras</h3>
-          <div className="flex w-full justify-between">
+          <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8 gap-3">
             <CategoryCard />
             <CategoryCard />
             <CategoryCard />
@@ -123,73 +122,65 @@ export default function Page() {
           </div>
 
           <h3 className="text-2xl mt-16 mb-6 font-semibold">Productos</h3>
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {status == "success" &&
               productsData?.products?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
-
-            <div className="col-span-3">
-              {status == "success" && (
-                <Pagination
-                  currentPage={pageNumber}
-                  siblingCount={1}
-                  totalPageCount={productsData?.paginating.totalpages}
-                  onPageChange={onPageChange}
-                />
-              )}
-            </div>
+          </div>
+          <div className="flex justify-center w-full pt-8">
+            {status == "success" && (
+              <Pagination
+                currentPage={pageNumber}
+                siblingCount={1}
+                totalPageCount={productsData?.paginating.totalpages}
+                onPageChange={onPageChange}
+              />
+            )}
           </div>
         </JustifyContent>
-      </article>
+      </section>
 
       {/* about */}
-      <article className="w-full py-24">
-        <JustifyContent className="">
-          <h3 className="text-2xl mb-6 font-semibold text-center">Nosotros</h3>
-          <div className="flex w-full justify-between text-center px-20">
-            <p>
-              Lorem ipsum dolor sit amet consectetur. Id velit tellus id arcu
-              quam tristique ipsum. Nisl at eget pretium sem proin porttitor
-              semper. Tellus tristique sed fringilla phasellus et sed leo. Sem
-              sit risus nec semper maecenas laoreet.
-            </p>
-          </div>
-        </JustifyContent>
-      </article>
+      <JustifyContent width={1200}>
+        <div className="flex flex-col w-full justify-center items-center text-center h-[400px] px-4">
+          <h3 className="text-3xl mb-6 font-semibold text-center">Nosotros</h3>
+          <p className="w-full md:w-[60%]">
+            Lorem ipsum dolor sit amet consectetur. Id velit tellus id arcu quam
+            tristique ipsum. Nisl at eget pretium sem proin porttitor semper.
+            Tellus tristique sed fringilla phasellus et sed leo. Sem sit risus
+            nec semper maecenas laoreet.
+          </p>
+        </div>
+      </JustifyContent>
 
       {/* blog */}
-      <article className="w-full bg-gray-100 pt-16">
-        <div className="flex justify-center w-full">
-          <div className="w-[90%]">
-            <Carousel data={data || []} />
-          </div>
+      <section className="w-full bg-gray-100 dark:bg-opacity-10  py-16 px-4">
+        <div className="flex justify-center w-full px-0 lg:px-8">
+          <Carousel data={data || []} />
         </div>
-        <JustifyContent className="w-[1200px]">
-          <h3 className="text-2xl mt-16 mb-6 font-semibold">Productos</h3>
-          <div className="grid grid-cols-3 gap-8">
+        <JustifyContent width={1200}>
+          <h3 className="text-2xl mt-16 mb-6 font-semibold">Blog</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {status == "success" &&
               productsData?.products?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
-
-            <div className="col-span-3">
-              {status == "success" && (
-                <Pagination
-                  currentPage={pageNumber}
-                  siblingCount={1}
-                  totalPageCount={productsData?.paginating.totalpages}
-                  onPageChange={onPageChange}
-                />
-              )}
-            </div>
+          </div>
+          <div className="flex justify-center w-full pt-8">
+            {status == "success" && (
+              <Pagination
+                currentPage={pageNumber}
+                siblingCount={1}
+                totalPageCount={productsData?.paginating.totalpages}
+                onPageChange={onPageChange}
+              />
+            )}
           </div>
         </JustifyContent>
-      </article>
+      </section>
 
-      {/* contact */}
-
-      <></>
+      {/* footer */}
     </div>
   );
 }

@@ -48,7 +48,7 @@ export default function Carousel({ data }) {
             className="flex flex-col items-center justify-center flex-shrink-0 w-full md:w-[33.33%] h-72 p-2 md:p-4"
             key={index}
           >
-            <div className="relative bg-white w-full h-full overflow-hidden rounded-md shadow-lg cursor-pointer border border-gray-300 hover:border-[#7E8EFF] select-none">
+            <div className="relative bg-white w-full h-full overflow-hidden rounded-md shadow-lg cursor-pointer border border-gray-300/10  hover:border-[#7E8EFF] select-none">
               {item.image ? (
                 <Image
                   src={item.image}
