@@ -26,7 +26,7 @@ function DashboardSpecialistCard({ specialist, variant = 'secondary' }) {
 			</div>
 			<div>
 				<EditSpecialistDialog specialist={specialist} />
-				<DeleteUserDialog id={specialist.id} />
+				{variant == 'secondary' && <DeleteUserDialog id={specialist.id} />}
 			</div>
 		</Card>
 	);

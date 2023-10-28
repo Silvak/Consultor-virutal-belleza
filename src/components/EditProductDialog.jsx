@@ -215,7 +215,7 @@ function EditProductDialog({ product }) {
 
 						<Button
 							type="submit"
-							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7]"
+							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
 						>
 							Edit
 						</Button>
