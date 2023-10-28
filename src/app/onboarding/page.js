@@ -22,7 +22,7 @@ export default function Onboarding() {
           </p>
           <Link href="/home">
             <button className="bg-white animate-pulsate text-custom-blue px-10 py-4 rounded-lg font-bold text-lg cursor-pointer shadow-custom-blue">
-              Get Started
+              Empezar
             </button>
           </Link>
         </div>

@@ -1,10 +1,9 @@
-import ImageUploader from '@/components/ImageUploader';
+import ImageUploader from "@/components/ImageUploader";
 
 export default function Page() {
-	return (
-		<div>
-			upload
-			<ImageUploader />
-		</div>
-	);
+  return (
+    <div>
+      <ImageUploader />
+    </div>
+  );
 }

@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  /*
   async redirects() {
     return [
       {
@@ -11,6 +12,9 @@ const nextConfig = {
       // ... oter redirections
     ];
   },
+  experimental: {
+    appDir: true,
+  },*/
 };
 
 module.exports = nextConfig;
