@@ -9,13 +9,58 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import JustifyContent from "@/components/JustifyContent";
+import Carousel from "@/components/Carousel";
 
 //table
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/card/ProductCard";
 import CategoryCard from "@/components/card/CategoryCard";
 
-//specialist
+const data = [
+  {
+    title: "Tarjeta 1",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+  {
+    title: "Tarjeta 2",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+  {
+    title: "Tarjeta 3",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+  {
+    title: "Tarjeta 4",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+  {
+    title: "Tarjeta 5",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+  {
+    title: "Tarjeta 6",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+  {
+    title: "Tarjeta 7",
+    description: "Descripción de la tarjeta 1",
+    image: "/assets/productTest.webp",
+  },
+];
+
+//
+/**
+ * The above function is a React component that renders a page with various sections including a hero
+ * section, categories, products, about section, blog section, and contact section.
+ * @returns The `Page` component is returning a JSX element, which represents the structure and content
+ * of the page.
+ */
 export default function Page() {
   const { toast } = useToast();
 
@@ -62,6 +107,7 @@ export default function Page() {
         </JustifyContent>
       </article>
 
+      {/* products */}
       <article className="w-full bg-gray-100">
         <JustifyContent className="w-[1200px]">
           <h3 className="text-2xl mb-6 font-semibold">Categortíras</h3>
@@ -97,7 +143,8 @@ export default function Page() {
         </JustifyContent>
       </article>
 
-      <article className="w-full py-16">
+      {/* about */}
+      <article className="w-full py-24">
         <JustifyContent className="">
           <h3 className="text-2xl mb-6 font-semibold text-center">Nosotros</h3>
           <div className="flex w-full justify-between text-center px-20">
@@ -111,7 +158,13 @@ export default function Page() {
         </JustifyContent>
       </article>
 
-      <article className="w-full bg-gray-100">
+      {/* blog */}
+      <article className="w-full bg-gray-100 pt-16">
+        <div className="flex justify-center w-full">
+          <div className="w-[90%]">
+            <Carousel data={data || []} />
+          </div>
+        </div>
         <JustifyContent className="w-[1200px]">
           <h3 className="text-2xl mt-16 mb-6 font-semibold">Productos</h3>
           <div className="grid grid-cols-3 gap-8">
@@ -133,23 +186,10 @@ export default function Page() {
           </div>
         </JustifyContent>
       </article>
+
+      {/* contact */}
+
+      <></>
     </div>
   );
 }
-
-/*
-
-<div className="w-[120px]">
-            <p>lorem</p>
-            <Button
-              variant="outline"
-              onClick={() => {
-                toast({
-                  description: "Your message has been sent.",
-                });
-              }}
-            >
-              Show Toast
-            </Button>
-          </div>
-*/
