@@ -6,7 +6,7 @@ export const login = (credentials) =>
 export const signUp = (userData) =>
 	apiInstance.post('/user/register', userData);
 
-export const uploadUserImage = (userId) => (image) =>
+	export const uploadUserImage = (userId, image) =>
 	apiInstanceWithAuth.post(`/files/user/${userId}`, image, {
 		headers: {
 			'Content-Type': 'multipart/form-data',
