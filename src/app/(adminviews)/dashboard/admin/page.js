@@ -1,18 +1,12 @@
 'use client';
 
-import CreateProductDialog from '@/components/CreateProductDialog';
 import DashboardSpecialistCard from '@/components/DashboardSpecialistCard';
 import DashboardSpecialistsCount from '@/components/DashboarSpecialistsCount';
-import DashboardProductCard from '@/components/DashboardProductCard';
 import DashboardProductsCount from '@/components/DashboardProductsCount';
 import DashboardUsersCount from '@/components/DashboardUsersCount';
-import React, { useState } from 'react';
 import CreateSpecialistDialog from '@/components/CreateSpecialistDialog';
-import DashboardUserCard from '@/components/DahsboardUserCard';
-import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '@/services/product.services';
-import { getUsers } from '@/services/user.services';
-import Pagination from '@/components/Pagination';
+import DashboardProductsSection from '@/components/DashboardProductsSection';
+import DashboardUsersSection from '@/components/DashboardUsersSection';
 
 const specialists = [
 	{
@@ -36,25 +30,6 @@ const specialists = [
 ];
 
 export default function Page() {
-	const [pageNumber, setPageNumber] = useState(1);
-	const [limit, setLimit] = useState(3);
-	const onPageChange = (page) => setPageNumber(page);
-
-	const { data: productsData, status } = useQuery({
-		queryKey: ['products', limit, pageNumber],
-		queryFn: () =>
-			getProducts({
-				limit,
-				offset: pageNumber,
-			}),
-	});
-
-	const { data: usersData, status: usersStatus } = useQuery({
-		queryKey: ['users'],
-		queryFn: getUsers,
-		select: (data) => data?.data,
-	});
-
 	return (
 		<div className="w-full">
 			<div className="flex gap-4 w-full justify-stretch m-auto mt-4">
@@ -62,25 +37,8 @@ export default function Page() {
 				<DashboardProductsCount count={5} />
 				<DashboardSpecialistsCount count={5} />
 			</div>
-			<div className="w-full  m-auto my-6 flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Products</h1>
-				<CreateProductDialog />
-			</div>
-			<div>
-				{status == 'success' &&
-					productsData?.products?.map((product) => (
-						<DashboardProductCard key={product._id} product={product} />
-					))}
 
-				{status == 'success' && (
-					<Pagination
-						currentPage={pageNumber}
-						siblingCount={2}
-						totalPageCount={productsData?.paginating.totalpages}
-						onPageChange={onPageChange}
-					/>
-				)}
-			</div>
+			<DashboardProductsSection />
 
 			<div className="w-full  m-auto my-6 flex justify-between items-center">
 				<h1 className="text-2xl font-bold">Specialists</h1>
@@ -95,15 +53,7 @@ export default function Page() {
 				))}
 			</div>
 
-			<div className="w-full  m-auto my-6 flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Users</h1>
-			</div>
-			<div>
-				{usersStatus == 'success' &&
-					usersData?.users.map((user) => (
-						<DashboardUserCard key={user._id} user={user} />
-					))}
-			</div>
+			<DashboardUsersSection />
 		</div>
 	);
 }

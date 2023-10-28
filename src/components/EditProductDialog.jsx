@@ -31,6 +31,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from './ui/select';
+import { getImgSrc } from '@/lib/utils';
 
 const editProductSchema = z.object({
 	name: z.string(),
@@ -46,7 +47,7 @@ function EditProductDialog({ product }) {
 			name: product.name,
 			description: product.description,
 			brand: product.brand,
-			productSkinType: product.productSkinType,
+			productSkinType: product.skinTypeProduct,
 			category: product.category,
 		},
 	});
@@ -88,7 +89,21 @@ function EditProductDialog({ product }) {
 				</DialogHeader>
 
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<form
+						onSubmit={form.handleSubmit(onSubmit)}
+						className="flex flex-col gap-2 justify-center"
+					>
+						<div className="flex flex-col items-center justify-center h-fit">
+							<div
+								className="flex-grow flex flex-col gap-2 items-center relative w-40 h-32 rounded-lg mb-4 bg-gray-100 shadow-lg border"
+								style={{
+									backgroundImage: `url(${getImgSrc('product', product.img)})`,
+									backgroundSize: 'contain',
+									backgroundPosition: 'center',
+									backgroundRepeat: 'no-repeat',
+								}}
+							></div>
+						</div>
 						<FormField
 							control={form.control}
 							name="name"
@@ -98,7 +113,7 @@ function EditProductDialog({ product }) {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Name"
 											{...field}
 										/>
@@ -117,7 +132,7 @@ function EditProductDialog({ product }) {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Description"
 											{...field}
 										/>
@@ -136,7 +151,7 @@ function EditProductDialog({ product }) {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Brand"
 											{...field}
 										/>
@@ -157,7 +172,7 @@ function EditProductDialog({ product }) {
 										defaultValue={field.value}
 									>
 										<FormControl>
-											<SelectTrigger>
+											<SelectTrigger className="border-none focus:ring-1">
 												<SelectValue placeholder="Select a category" />
 											</SelectTrigger>
 										</FormControl>
@@ -182,7 +197,7 @@ function EditProductDialog({ product }) {
 										defaultValue={field.value}
 									>
 										<FormControl>
-											<SelectTrigger>
+											<SelectTrigger className="border-none focus:ring-1">
 												<SelectValue placeholder="Select a skin type" />
 											</SelectTrigger>
 										</FormControl>
@@ -200,7 +215,7 @@ function EditProductDialog({ product }) {
 
 						<Button
 							type="submit"
-							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7]"
+							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
 						>
 							Edit
 						</Button>
