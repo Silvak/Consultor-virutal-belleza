@@ -35,7 +35,7 @@ const Pagination = (props) => {
 				className={`w-fit ${
 					currentPage === 1
 						? ' hover:bg-transparent hover:cursor-default'
-						: 'py-0 px-1 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs hover:cursor-pointer hover:bg-slate-500 dark:text-slate-200'
+						: 'py-0 px-1 h-8 text-center mx-auto my-1  flex items-center rounded-xl text-xs hover:cursor-pointer hover:bg-slate-500 dark:text-slate-200'
 				}`}
 			>
 				<ChevronLeft

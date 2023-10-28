@@ -81,7 +81,7 @@ function CreateSpecialistDialog() {
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
-				<Button className="bg-[#00A7D7] hover:bg-[#00A7D7]">
+				<Button className="bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl">
 					Add Specialist
 				</Button>
 			</DialogTrigger>

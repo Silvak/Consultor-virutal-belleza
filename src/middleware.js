@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
+import { isExpired } from './lib/utils';
 
 const adminRoutes = [];
 
@@ -9,9 +10,13 @@ the user to the login page. This middleware function is wrapped with the `withAu
 function, which ensures that the user is authenticated before executing the middleware logic. */
 export default withAuth(
 	function middleware(req) {
+		// Redirect to login if token is expired
+		console.log(req.nextauth?.token);
+		if (isExpired(req.nextauth?.token?.exp)) {
+			return NextResponse.rewrite(new URL('/login', req.url));
+		}
+
 		// Protect admin routes
-		console.log(req.nextUrl.pathname);
-		console.log('this is it', req.nextauth);
 		if (
 			req.nextUrl.pathname == '/dashboard/admin' &&
 			req.nextauth.token.user.rol != 'ADMIN_ROLE'

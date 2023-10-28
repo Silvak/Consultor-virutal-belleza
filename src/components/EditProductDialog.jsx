@@ -31,7 +31,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from './ui/select';
-import { getProductImgSrc } from '@/lib/utils';
+import { getImgSrc } from '@/lib/utils';
 
 const editProductSchema = z.object({
 	name: z.string(),
@@ -74,8 +74,6 @@ function EditProductDialog({ product }) {
 		});
 	}
 
-	console.log(product);
-
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
@@ -99,7 +97,7 @@ function EditProductDialog({ product }) {
 							<div
 								className="flex-grow flex flex-col gap-2 items-center relative w-40 h-32 rounded-lg mb-4 bg-gray-100 shadow-lg border"
 								style={{
-									backgroundImage: `url(${getProductImgSrc(product.img)})`,
+									backgroundImage: `url(${getImgSrc('product', product.img)})`,
 									backgroundSize: 'contain',
 									backgroundPosition: 'center',
 									backgroundRepeat: 'no-repeat',

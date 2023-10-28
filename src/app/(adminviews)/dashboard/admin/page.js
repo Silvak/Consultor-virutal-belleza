@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '@/services/product.services';
 import { getUsers } from '@/services/user.services';
 import Pagination from '@/components/Pagination';
+import DashboardCardsSkeletons from '@/components/DashboardCardSkeletons';
 
 const specialists = [
 	{
@@ -36,24 +37,33 @@ const specialists = [
 ];
 
 export default function Page() {
-	const [pageNumber, setPageNumber] = useState(1);
-	const [limit, setLimit] = useState(3);
-	const onPageChange = (page) => setPageNumber(page);
+	const [productsPageNumber, setProductsPageNumber] = useState(1);
+	const [productsLimit, setProductsLimit] = useState(3);
+	const onProductsPageChange = (page) => setProductsPageNumber(page);
 
 	const { data: productsData, status } = useQuery({
-		queryKey: ['products', limit, pageNumber],
+		queryKey: ['products', productsLimit, productsPageNumber],
 		queryFn: () =>
 			getProducts({
-				limit,
-				offset: pageNumber,
+				limit: productsLimit,
+				offset: productsPageNumber,
 			}),
 	});
 
+	const [usersPageNumber, setUsersPageNumber] = useState(1);
+	const [usersLimit, setUsersLimit] = useState(3);
+	const onUsersPageChange = (page) => setUsersPageNumber(page);
+
 	const { data: usersData, status: usersStatus } = useQuery({
-		queryKey: ['users'],
-		queryFn: getUsers,
-		select: (data) => data?.data,
+		queryKey: ['users', usersPageNumber, usersLimit],
+		queryFn: () =>
+			getUsers({
+				limit: usersLimit,
+				offset: usersPageNumber,
+			}),
 	});
+
+	console.log(usersData);
 
 	return (
 		<div className="w-full">
@@ -67,18 +77,19 @@ export default function Page() {
 				<CreateProductDialog />
 			</div>
 			<div>
-				{status == 'success' &&
-					productsData?.products?.map((product) => (
-						<DashboardProductCard key={product._id} product={product} />
-					))}
-
+				{status == 'pending' && <DashboardCardsSkeletons />}
 				{status == 'success' && (
-					<Pagination
-						currentPage={pageNumber}
-						siblingCount={2}
-						totalPageCount={productsData?.paginating.totalpages}
-						onPageChange={onPageChange}
-					/>
+					<>
+						{productsData?.products?.map((product) => (
+							<DashboardProductCard key={product._id} product={product} />
+						))}
+						<Pagination
+							currentPage={productsPageNumber}
+							siblingCount={2}
+							totalPageCount={productsData?.paginating.totalpages}
+							onPageChange={onProductsPageChange}
+						/>
+					</>
 				)}
 			</div>
 
@@ -99,10 +110,20 @@ export default function Page() {
 				<h1 className="text-2xl font-bold">Users</h1>
 			</div>
 			<div>
-				{usersStatus == 'success' &&
-					usersData?.users.map((user) => (
-						<DashboardUserCard key={user._id} user={user} />
-					))}
+				{usersStatus == 'pending' && <DashboardCardsSkeletons />}
+				{usersStatus == 'success' && (
+					<>
+						{usersData?.users.map((user) => (
+							<DashboardUserCard key={user._id} user={user} />
+						))}
+						<Pagination
+							currentPage={usersPageNumber}
+							siblingCount={2}
+							totalPageCount={usersData?.paginating.totalpages}
+							onPageChange={onUsersPageChange}
+						/>
+					</>
+				)}
 			</div>
 		</div>
 	);
