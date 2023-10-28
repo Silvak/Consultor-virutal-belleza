@@ -25,12 +25,12 @@ export default withAuth(
 		}
 
 		// Protect specialist routes
-		if (
-			req.nextUrl.pathname == '/dashboard/specialist' &&
-			req.nextauth.token.user.role != 'SPECIALIST_ROLE'
-		) {
-			return NextResponse.rewrite(new URL('/login', req.url));
-		}
+		// if (
+		// 	req.nextUrl.pathname == '/dashboard/specialist' &&
+		// 	req.nextauth.token.user.role != 'SPECIALIST_ROLE'
+		// ) {
+		// 	return NextResponse.rewrite(new URL('/login', req.url));
+		// }
 
 		return NextResponse.next();
 	},

@@ -294,7 +294,7 @@ function CreateProductDialog() {
 
 						<Button
 							type="submit"
-							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7]"
+							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
 						>
 							Add
 						</Button>

@@ -103,7 +103,7 @@ function CreateSpecialistDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none "
+											className="border-none focus-visible:ring-1"
 											placeholder="Name"
 											{...field}
 										/>
@@ -122,7 +122,7 @@ function CreateSpecialistDialog() {
 									<FormControl>
 										<Input
 											type="email"
-											className="border-none "
+											className="border-none focus-visible:ring-1"
 											placeholder="Email"
 											{...field}
 										/>
@@ -141,7 +141,7 @@ function CreateSpecialistDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Description"
 											{...field}
 										/>
@@ -160,7 +160,7 @@ function CreateSpecialistDialog() {
 									<FormControl>
 										<Input
 											type="text"
-											className="border-none"
+											className="border-none focus-visible:ring-1"
 											placeholder="Specialty"
 											{...field}
 										/>
@@ -179,7 +179,7 @@ function CreateSpecialistDialog() {
 									<FormControl>
 										<Input
 											type="password"
-											className="border-none "
+											className="border-none focus-visible:ring-1"
 											placeholder="Password"
 											{...field}
 										/>
@@ -200,7 +200,7 @@ function CreateSpecialistDialog() {
 									<FormControl>
 										<Input
 											type="password"
-											className="border-none "
+											className="border-none focus-visible:ring-1"
 											placeholder="Password"
 											{...field}
 										/>
@@ -212,7 +212,7 @@ function CreateSpecialistDialog() {
 
 						<Button
 							type="submit"
-							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7]"
+							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
 						>
 							Add
 						</Button>

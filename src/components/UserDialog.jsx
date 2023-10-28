@@ -64,10 +64,10 @@ function UserDialog({ user }) {
 							{user.displayName}
 						</p>
 						<p className="text-md font-medium text-slate-800 dark:text-slate-200">
-							{user.email}
+							{user.gender == 'F' ? 'Female' : 'Male'}
 						</p>
 						<p className="text-sm text-slate-700 dark:text-slate-200">
-							{user.skinType}
+							{user.skinType} skin
 						</p>
 					</div>
 				</div>
@@ -117,7 +117,10 @@ function UserDialog({ user }) {
 							</Label>
 						</div>
 
-						<Button className="px-4 py-2 h-fit rounded-xl bg-[#00A7D7] hover:bg-[#00A7D7]">
+						<Button
+							className="px-4 py-2 h-fit rounded-xl bg-[#00A7D7] hover:bg-[#00A7D7]"
+							disabled={selectedProducts.length < 1}
+						>
 							Enviar
 						</Button>
 					</div>
