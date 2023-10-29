@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
 import { isExpired } from './lib/utils';
-import dayjs from 'dayjs';
+
+const adminRoutes = [];
 
 /* The code is exporting a middleware function that checks if the requested URL path is included in the
 `adminRoutes` array and if the user's role is not 'admin'. If both conditions are true, it redirects
@@ -9,12 +10,6 @@ the user to the login page. This middleware function is wrapped with the `withAu
 function, which ensures that the user is authenticated before executing the middleware logic. */
 export default withAuth(
 	function middleware(req) {
-		// Redirect to login if token is expired
-
-		if (isExpired(req.nextauth?.token?.exp)) {
-			return NextResponse.rewrite(new URL('/login', req.url));
-		}
-
 		// Protect admin routes
 		if (
 			req.nextUrl.pathname == '/dashboard/admin' &&
@@ -24,12 +19,12 @@ export default withAuth(
 		}
 
 		// Protect specialist routes
-		// if (
-		// 	req.nextUrl.pathname == '/dashboard/specialist' &&
-		// 	req.nextauth.token.user.role != 'SPECIALIST_ROLE'
-		// ) {
-		// 	return NextResponse.rewrite(new URL('/login', req.url));
-		// }
+		if (
+			req.nextUrl.pathname == '/dashboard/specialist' &&
+			req.nextauth.token.user.rol != 'ESPEC_ROLE'
+		) {
+			return NextResponse.rewrite(new URL('/login', req.url));
+		}
 
 		return NextResponse.next();
 	},

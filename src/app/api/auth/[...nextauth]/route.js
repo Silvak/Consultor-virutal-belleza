@@ -1,6 +1,7 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
 import { login } from '@/services/user.services';
+import { jwtDecode } from 'jwt-decode';
 
 const handler = NextAuth({
 	providers: [
@@ -17,8 +18,6 @@ const handler = NextAuth({
 						password: credentials.password,
 					});
 
-					console.log(user.data);
-
 					return user.data;
 				} catch (e) {
 					console.log(e);
@@ -28,8 +27,18 @@ const handler = NextAuth({
 		}),
 	],
 	callbacks: {
-		async jwt({ token, user }) {
-			return { ...token, ...user };
+		async jwt({ user, token }) {
+			if (token.accessExp) {
+				return { ...user, ...token };
+			} else {
+				const accessExp = user?.token
+					? jwtDecode(user?.token).exp
+					: token?.token
+					? jwtDecode(token?.token).exp
+					: undefined;
+
+				return { ...user, ...token, accessExp };
+			}
 		},
 		async session({ session, token }) {
 			session.user = token;
