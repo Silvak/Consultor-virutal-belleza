@@ -13,29 +13,31 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import RecommendProductCard from './RecommendProductCard';
 import { getImgSrc } from '@/lib/utils';
+import useDebounce from '@/hooks/useDebounce';
+import DashboardCardsSkeletons from './DashboardCardSkeletons';
 
 function UserDialog({ user }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [search, setSearch] = useState('');
-	const [selectedProducts, setSelectedProducts] = useState([]);
+	const debouncedSearch = useDebounce(search, 500);
+	const [selectedProducts, setSelectedProducts] = useState(null);
 	const { data: productsData, status: productsStatus } = useQuery({
-		queryKey: ['products', { limit: 3 }],
+		queryKey: ['products', { limit: 3, term: debouncedSearch }],
 		queryFn: () =>
 			getProducts({
 				limit: 3,
+				term: debouncedSearch,
 			}),
 	});
-
-	// const debouncedSearch = useDebounce(search, 500);
 
 	const swiperRef = useRef();
 
 	function toggleSelected(id) {
 		setSelectedProducts((prev) => {
-			if (prev.includes(id)) {
-				return prev.filter((p) => p !== id);
+			if (prev == id) {
+				return null;
 			} else {
-				return [...prev, id];
+				return id;
 			}
 		});
 	}
@@ -119,20 +121,28 @@ function UserDialog({ user }) {
 
 						<Button
 							className="px-4 py-2 h-fit rounded-xl bg-[#00A7D7] hover:bg-[#00A7D7]"
-							disabled={selectedProducts.length < 1}
+							disabled={!selectedProducts}
 						>
 							Enviar
 						</Button>
 					</div>
 					<div>
-						{productsData?.products?.map((product) => (
-							<RecommendProductCard
-								key={product._id}
-								product={product}
-								onClick={toggleSelected}
-								selected={selectedProducts.includes(product._id)}
-							/>
-						))}
+						{productsStatus == 'pending' ? (
+							<DashboardCardsSkeletons />
+						) : productsData?.products.length > 0 ? (
+							productsData?.products?.map((product) => (
+								<RecommendProductCard
+									key={product._id}
+									product={product}
+									onClick={toggleSelected}
+									selected={selectedProducts == product._id}
+								/>
+							))
+						) : (
+							<p className="text-gray-400 text-center">
+								No products found with that name
+							</p>
+						)}
 					</div>
 				</div>
 			</DialogContent>

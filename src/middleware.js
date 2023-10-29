@@ -15,7 +15,7 @@ export default withAuth(
 			req.nextUrl.pathname == '/dashboard/admin' &&
 			req.nextauth.token.user.rol != 'ADMIN_ROLE'
 		) {
-			return NextResponse.rewrite(new URL('/login', req.url));
+			return NextResponse.redirect(new URL('/home', req.url));
 		}
 
 		// Protect specialist routes
@@ -23,7 +23,7 @@ export default withAuth(
 			req.nextUrl.pathname == '/dashboard/specialist' &&
 			req.nextauth.token.user.rol != 'ESPEC_ROLE'
 		) {
-			return NextResponse.rewrite(new URL('/login', req.url));
+			return NextResponse.redirect(new URL('/home', req.url));
 		}
 
 		return NextResponse.next();
