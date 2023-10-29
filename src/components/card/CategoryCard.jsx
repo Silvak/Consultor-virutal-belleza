@@ -11,6 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+/**
+ * The CategoryCard component is a React component that displays a card with an image and a header for
+ * a specific category.
+ * @returns a JSX element that represents a CategoryCard component. The component includes a Card
+ * component from a UI library, an Image component, and a CardHeader component. The Card component has
+ * various CSS classes applied to it for styling, and it contains the Image component and the
+ * CardHeader component. The Image component displays an image with a source URL and alternative text.
+ * The CardHeader component displays a
+ */
 export default function CategoryCard({ Category }) {
   return (
     <Card className="flex flex-col justify-center items-center gap-2 shadow-lg cursor-pointer hover:border-[#7E8EFF] lg:w-[132px] h-[132px] p-6">

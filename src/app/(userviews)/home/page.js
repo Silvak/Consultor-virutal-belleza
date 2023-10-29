@@ -16,6 +16,7 @@ import Footer from "@/components/Footer";
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/card/ProductCard";
 import CategoryCard from "@/components/card/CategoryCard";
+import BlogCard from "@/components/card/BlogCard";
 
 const data = [
   {
@@ -165,10 +166,10 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {status == "success" &&
               productsData?.products?.map((product) => (
-                <ProductCard key={product._id} product={product} />
+                <BlogCard key={product._id} product={product} />
               ))}
           </div>
-          <Button className="bg-[#7E8EFF] text-2xl px-8 h-[46px] w-full mt-8 shadow-lg">
+          <Button className="bg-[#7E8EFF] text-xl px-8 h-[46px] w-full mt-8 shadow-lg">
             Todas las entradas
           </Button>
         </JustifyContent>
