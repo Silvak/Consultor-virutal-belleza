@@ -19,7 +19,7 @@ export default function BlogCard({ article }) {
         <Image
           src={"" || "/assets/palceholder.png"}
           alt="Picture of the product"
-          className="rounded-md max-w-full h-[300px] object-cover"
+          className="rounded-md max-w-full h-[240px] object-cover"
           width={500}
           height={500}
         />
