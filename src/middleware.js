@@ -9,6 +9,7 @@ const adminRoutes = [];
 the user to the login page. This middleware function is wrapped with the `withAuth` higher-order
 function, which ensures that the user is authenticated before executing the middleware logic. */
 export default withAuth(
+<<<<<<< HEAD
 	function middleware(req) {
 		// Redirect to login if token is expired
 		console.log(req.nextauth?.token);
@@ -31,17 +32,37 @@ export default withAuth(
 		// ) {
 		// 	return NextResponse.rewrite(new URL('/login', req.url));
 		// }
+=======
+  function middleware(req) {
+    // Protect admin routes
+    console.log(req.nextUrl.pathname);
+    console.log("this is it", req.nextauth);
+    if (
+      req.nextUrl.pathname == "/dashboard/admin" &&
+      req.nextauth.token.user.rol != "ADMIN_ROLE"
+    ) {
+      return NextResponse.rewrite(new URL("/login", req.url));
+    }
 
-		return NextResponse.next();
-	},
-	{
-		callbacks: {
-			authorized: ({ token }) => !!token,
-		},
-		pages: {
-			signIn: '/login',
-		},
-	}
+    // Protect specialist routes
+    if (
+      req.nextUrl.pathname == "test2" &&
+      req.nextauth.token.user.role != "specialist"
+    ) {
+      return NextResponse.rewrite(new URL("/login", req.url));
+    }
+>>>>>>> 6e6b9635e72a8dccce517e361f0c9de7d6906b6f
+
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+    pages: {
+      signIn: "/login",
+    },
+  }
 );
 
 /* The line `export const config = { matcher: protectedRoutes };` is exporting a configuration object

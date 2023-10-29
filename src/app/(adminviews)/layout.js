@@ -7,7 +7,7 @@ export default function RootLayout({ children }) {
 			<Navbar />
 			{/* Page Content */}
 			<div className="flex justify-center w-full  mt-[56px]">
-				<article className="max-w-[1200px] w-full mx-auto py-8 border-x border-gray-100 overflow-hidden">
+				<article className="max-w-[1200px] border-x border-gray-100 overflow-hidden">
 					{children}
 				</article>
 			</div>
