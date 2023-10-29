@@ -4,6 +4,7 @@ import { getImgSrc } from '@/lib/utils';
 import DeleteProductDialog from './DeleteProductDialog';
 import EditProductDialog from './EditProductDialog';
 import { Card } from './ui/card';
+import { AiOutlineStar } from 'react-icons/ai';
 
 function DashboardProductCard({ product }) {
 	return (
@@ -34,9 +35,17 @@ function DashboardProductCard({ product }) {
 					</p>
 				</div>
 			</div>
-			<div>
-				<EditProductDialog product={product} />
-				<DeleteProductDialog id={product._id} />
+			<div className="flex flex-col justify-between align-bottom ">
+				<div className="flex justify-end">
+					<EditProductDialog product={product} />
+					<DeleteProductDialog id={product._id} />
+				</div>
+
+				<div className="flex gap-1 mt-1 pr-2">
+					{[...Array(5)].map((_, index) => (
+						<AiOutlineStar key={index} className="text-xl md:text-[24px]" />
+					))}
+				</div>
 			</div>
 		</Card>
 	);

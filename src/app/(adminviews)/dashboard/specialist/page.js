@@ -3,19 +3,18 @@
 import DashboardProductsSection from '@/components/DashboardProductsSection';
 import DashboardSpecialistCard from '@/components/DashboardSpecialistCard';
 import DashboardUsersSection from '@/components/DashboardUsersSection';
+import { useSession } from 'next-auth/react';
 
 export default function Page() {
+	const { data: session, status } = useSession();
 	return (
 		<div>
-			<DashboardSpecialistCard
-				specialist={{
-					id: 1,
-					name: 'specialist 1',
-					description: 'specialist 1 description',
-					specialty: 'specialty 1',
-				}}
-				variant="main"
-			/>
+			{status == 'authenticated' && (
+				<DashboardSpecialistCard
+					specialist={session.user.user}
+					variant="main"
+				/>
+			)}
 
 			<DashboardProductsSection />
 

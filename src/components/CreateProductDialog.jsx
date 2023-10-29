@@ -31,6 +31,7 @@ import {
 } from './ui/select';
 import { getCategories } from '@/services/category.services';
 import { Image } from 'lucide-react';
+import UploadImageOnModal from './UploadImageOnModal';
 
 const createProductSchema = z
 	.object({
@@ -60,7 +61,6 @@ function CreateProductDialog() {
 			brand: '',
 		},
 	});
-	const [previewImage, setPreviewImage] = useState(null);
 
 	const { data: categoriesData, status: categoriesStatus } = useQuery({
 		queryKey: ['categories'],
@@ -90,9 +90,7 @@ function CreateProductDialog() {
 				onSuccess: async (data) => {
 					try {
 						const formData = new FormData();
-						console.log(productData.image);
 						formData.append('image', productData.image, productData.image.name);
-						console.log(formData);
 						await uploadProductImage(data.data._id, formData);
 						form.reset();
 						setIsOpen(false);
@@ -126,59 +124,8 @@ function CreateProductDialog() {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="flex flex-col gap-2 justify-center"
 					>
-						<FormField
-							control={form.control}
-							name="image"
-							render={({ field: { name, value, disabled, onChange } }) => (
-								<FormItem className="w-full h-fit flex justify-center">
-									<FormLabel className="flex flex-col gap-4 justify-center items-center">
-										<div className="flex flex-col items-center justify-center h-fit">
-											<div
-												className={`flex-grow flex flex-col gap-2 items-center relative w-40 h-32 rounded-lg mb-4 bg-gray-100  ${
-													previewImage && 'shadow-lg border'
-												}`}
-												style={{
-													backgroundImage: `url(${previewImage})`,
-													backgroundSize: 'contain',
-													backgroundPosition: 'center',
-													backgroundRepeat: 'no-repeat',
-												}}
-											>
-												{!previewImage && (
-													<>
-														<p className="text-gray-500 font-medium w-fit">
-															Upload product image
-														</p>
-														<div className="w-32 h-28 flex items-center justify-center rounded-xl border-4 border-dotted border-gray-500 cursor-pointer">
-															<Image className="text-gray-500 w-12 h-12" />
-														</div>
-													</>
-												)}
-											</div>
-										</div>
-									</FormLabel>
-									<FormControl>
-										<Input
-											type="file"
-											className="bg-gray-200 hidden"
-											onChange={(e) => {
-												if (e.target.files) {
-													onChange(e.target.files[0]);
-													const imageUrl = URL.createObjectURL(
-														e.target.files[0]
-													);
-													setPreviewImage(imageUrl);
-												}
-											}}
-											name={name}
-											value={value?.filename}
-											disabled={disabled}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+						<UploadImageOnModal form={form} />
+
 						<FormField
 							control={form.control}
 							name="name"
