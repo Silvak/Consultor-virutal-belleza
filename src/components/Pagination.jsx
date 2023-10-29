@@ -3,6 +3,12 @@
 import { usePagination } from '@/hooks/usePagination';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+/**
+ * The `Pagination` component is a React component that renders a pagination UI with previous and next
+ * buttons, page numbers, and ellipsis for large page counts.
+ * @returns The Pagination component is returning a JSX element, specifically a `<ul>` element with a
+ * list of `<li>` elements representing the pagination navigation.
+ */
 const Pagination = (props) => {
 	const { totalPageCount, siblingCount = 1, currentPage, onPageChange } = props;
 
@@ -20,7 +26,6 @@ const Pagination = (props) => {
 	const onNext = () => {
 		if (currentPage < totalPageCount) onPageChange(currentPage + 1);
 	};
-
 	const onPrevious = () => {
 		if (currentPage > 1) onPageChange(currentPage - 1);
 	};
@@ -28,30 +33,29 @@ const Pagination = (props) => {
 	let lastPage = paginationRange[paginationRange?.length - 1];
 
 	return (
-		<ul className="flex list-none items-center justify-between w-fit gap-4 m-auto">
+		<ul className="flex list-none items-center justify-between w-fit gap-2 m-auto bg-white dark:bg-[#020817]  shadow-md rounded-md px-2 py-2 border border-gray-200 dark:border-gray-200/20">
 			{/* Left navigation arrow */}
 			<li
 				onClick={onPrevious}
-				className={`w-fit ${
+				className={`flex justify-center items-center h-[40px] w-[40px] ${
 					currentPage === 1
-						? ' hover:bg-transparent hover:cursor-default'
-						: 'py-0 px-1 h-8 text-center mx-auto my-1  flex items-center rounded-xl text-xs hover:cursor-pointer hover:bg-slate-500 dark:text-slate-200'
+						? 'hover:bg-transparent hover:cursor-default'
+						: 'flex justify-center items-center h-[40px] w-[40px] text-black rounded-md text-xs hover:cursor-pointer hover:bg-[#7E8EFF]/50'
 				}`}
 			>
 				<ChevronLeft
 					className={
-						currentPage === 1
-							? 'text-gray-500'
-							: 'text-black dark:text-slate-200'
+						currentPage === 1 ? 'text-gray-500' : 'text-black dark:text-white'
 					}
 				/>
 			</li>
+
 			{paginationRange.map((pageNumber) => {
 				// If the pageItem is a DOT, render the DOTS unicode character
 				if (pageNumber === '...') {
 					return (
 						<li
-							className="w-fit py-0 px-1 h-8 text-center mx-auto my-1 text-black dark:text-slate-200 flex items-center rounded-xl text-xs  bg-transparent"
+							className="w-fit py-0 px-1 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs  bg-transparent"
 							key={pageNumber}
 						>
 							&#8230;
@@ -63,10 +67,10 @@ const Pagination = (props) => {
 				return (
 					<li
 						onClick={() => onPageChange(Number(pageNumber))}
-						className={`w-fit p-4 h-8 text-center mx-auto my-1 text-black dark:text-slate-200 flex items-center rounded-xl text-xs hover:cursor-pointer  ${
+						className={`flex justify-center items-center h-[40px] w-[40px]  text-black dark:text-white rounded-md text-sm hover:cursor-pointer  ${
 							pageNumber === currentPage
-								? 'bg-gray-300 dark:bg-gray-700'
-								: 'hover:bg-slate-500'
+								? 'bg-[#7E8EFF]/50 '
+								: 'hover:bg-[#7E8EFF]/50'
 						}`}
 						key={pageNumber}
 					>
@@ -74,20 +78,21 @@ const Pagination = (props) => {
 					</li>
 				);
 			})}
+
 			{/*  Right Navigation arrow */}
 			<li
 				onClick={onNext}
-				className={`w-fit ${
+				className={`flex justify-center items-center h-[40px] w-[40px] ${
 					currentPage === lastPage
 						? ' hover:bg-transparent hover:cursor-default'
-						: 'py-0 px-1 h-8 text-center mx-auto my-1 text-black flex items-center rounded-xl text-xs hover:cursor-pointer hover:bg-slate-500'
+						: 'flex justify-center items-center h-[40px] w-[40px] text-center mx-auto text-black rounded-md text-xs hover:cursor-pointer hover:bg-[#7E8EFF]/50'
 				}`}
 			>
 				<ChevronRight
 					className={
 						currentPage === lastPage
 							? 'text-gray-500'
-							: 'text-black dark:text-slate-200'
+							: 'text-black dark:text-white'
 					}
 				/>
 			</li>

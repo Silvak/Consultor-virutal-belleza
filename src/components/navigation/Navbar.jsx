@@ -3,6 +3,7 @@ import Link from "next/link";
 import { DarkMode } from "../ModeToggleTheme";
 import HorizontalMenu from "./HorizontalMenu";
 import SidebarContent from "./SidebarContent";
+import { signOut, useSession } from "next-auth/react";
 
 //cn components
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -51,7 +52,7 @@ export const routes = [
  */
 export default function Navbar() {
   return (
-    <header className="fixed top-0 left-0 w-screen h-[60px] border-b border-gray-300/50 bg-white-40 backdrop-blur-md">
+    <header className="fixed top-0 left-0 w-screen h-[60px] border-b border-gray-300/70 dark:border-gray-200/30 bg-white/70 dark:bg-[#020817]/70 backdrop-blur-md z-50">
       <nav className="flex w-full h-full justify-between items-center px-8">
         {/*Logo */}
         <Link href="/home" className="font-semibold">
