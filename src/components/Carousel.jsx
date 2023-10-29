@@ -9,16 +9,25 @@ import { Button } from "./ui/button";
 which is an array of objects representing the items to be displayed in the carousel. */
 export default function Carousel({ data }) {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [itemByScreenRes, setItemByScreenRes] = useState(33.33);
 
   useEffect(() => {
     const slideTimer = setInterval(() => {
       nextSlide();
     }, 5000);
 
+    // Calculate item width by screen resolution
+    const calculatedWidth = window.innerWidth < 768 ? 100 : 33.33;
+    if (data && data.length < 3) {
+      setItemByScreenRes(100);
+    } else {
+      setItemByScreenRes(calculatedWidth);
+    }
+
     return () => {
       clearInterval(slideTimer);
     };
-  }, [activeSlide]);
+  }, [activeSlide, data]);
 
   const nextSlide = () => {
     const newIndex = activeSlide + 1 >= data.length - 2 ? 0 : activeSlide + 1;
@@ -29,12 +38,6 @@ export default function Carousel({ data }) {
     const newIndex = activeSlide - 1 < 0 ? data.length - 3 : activeSlide - 1;
     setActiveSlide(newIndex);
   };
-
-  // Calculate item width by screen resolution
-  let itemByScreenRes = window.innerWidth < 768 ? 100 : 33.33;
-  if (data && data.length < 3) {
-    itemByScreenRes = 100;
-  }
 
   return (
     <div className="relative w-full h-min overflow-x-hidden">

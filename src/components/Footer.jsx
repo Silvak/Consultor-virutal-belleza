@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="grid grid-cols-1 lg:grid-cols-4 h-full w-full max-w-[1200px] py-12  lg:gap-x-8 gap-y-12 lg:gap-y-0 px-4 lg:px-0">
         <div className="flex flex-col lg:flex-row justify-center items-start gap-8 col-span-1 lg:col-span-2">
           <h4 className="font-semibold text-2xl whitespace-nowrap">CBV-IA</h4>
-          <div className="lg:border-l border-black lg:pl-8">
+          <div className="lg:border-l border-black lg:pl-8 text-sm">
             <h4 className="font-semibold text-lg">About Us</h4>
             <p className="">
               About us Lorem ipsum dolor sit amet consectetur. Eget est diam
@@ -17,7 +17,7 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col items-venter w-full justify-start">
+        <div className="flex flex-col items-venter w-full justify-start text-sm">
           <h4 className="font-semibold text-lg">Quick Links</h4>
           <ul>
             <li>Home</li>
@@ -27,7 +27,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="flex flex-col items-venter w-full justify-start">
+        <div className="flex flex-col items-venter w-full justify-start text-sm">
           <h4 className="font-semibold text-lg">Contact</h4>
           <p>email@email.com</p>
           <p>+34 00000212</p>

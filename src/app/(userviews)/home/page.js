@@ -162,22 +162,15 @@ export default function Page() {
         </div>
         <JustifyContent width={1200}>
           <h3 className="text-2xl mt-16 mb-6 font-semibold">Blog</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {status == "success" &&
               productsData?.products?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
-          <div className="flex justify-center w-full pt-8">
-            {status == "success" && (
-              <Pagination
-                currentPage={pageNumber}
-                siblingCount={1}
-                totalPageCount={productsData?.paginating.totalpages}
-                onPageChange={onPageChange}
-              />
-            )}
-          </div>
+          <Button className="bg-[#7E8EFF] text-2xl px-8 h-[46px] w-full mt-8 shadow-lg">
+            Todas las entradas
+          </Button>
         </JustifyContent>
       </section>
 
