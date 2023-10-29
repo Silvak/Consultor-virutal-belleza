@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import JustifyContent from "@/components/JustifyContent";
 import Carousel from "@/components/Carousel";
+import Footer from "@/components/Footer";
 
 //table
 import Pagination from "@/components/Pagination";
@@ -181,6 +182,7 @@ export default function Page() {
       </section>
 
       {/* footer */}
+      <Footer />
     </div>
   );
 }
