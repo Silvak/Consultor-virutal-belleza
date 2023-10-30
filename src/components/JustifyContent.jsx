@@ -8,7 +8,9 @@ import React from "react";
 export default function JustifyContent({ width = 1200, children }) {
   return (
     <article className={`flex justify-center items-center w-full`}>
-      <div style={{ maxWidth: width }}>{children}</div>
+      <div style={{ maxWidth: width }} className="flex flex-col w-full h-min">
+        {children}
+      </div>
     </article>
   );
 }
