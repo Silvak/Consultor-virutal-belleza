@@ -34,13 +34,16 @@ export default function BlogCard({
         </div>
 
         <CardHeader className="flex justify-between">
-          <div className="flex flex-col gap-1 border-b pb-3">
+          <div className="flex justify-between items-center gap-1 border-b pb-3">
             <CardTitle>{title}</CardTitle>
-          </div>
-          <div className="flex gap-2 pt-2">
-            <AiOutlineHeart className="text-[24px]" /> <p>1k</p>{" "}
             <p>{author?.name}</p>
-            <p>{datePublishesd}</p>
+          </div>
+          <div className="flex justify-between gap-2 pt-2">
+            <div className="flex gap-2">
+              <AiOutlineHeart className="text-[24px]" /> <p>1k</p>
+            </div>
+
+            <p className="text-sm">{datePublishesd}</p>
           </div>
         </CardHeader>
       </Link>

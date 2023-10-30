@@ -33,8 +33,8 @@ export default function Page({ params }) {
   if (!post) return <p>Loading...</p>;
 
   return (
-    <section className="flex justify-center  bg-gray-100 dark:bg-gray-300/10 p-4 lg:py-16 ">
-      <div className="w-full max-w-[1200px] bg-white dark:bg-[#020817] shadow-lg rounded-lg p-4 lg:p-8">
+    <section className="flex items-center flex-col bg-gray-100 dark:bg-gray-300/10 p-4 lg:py-16 gap-8">
+      <div className="w-full max-w-[1200px] bg-white dark:bg-[#020817] shadow-lg rounded-lg p-4 lg:p-8 border border-gray-300 dark:border-gray-300/40">
         {/* title */}
         <h2 className="text-3xl font-semibold mb-4">{post.title}</h2>
 
@@ -57,7 +57,7 @@ export default function Page({ params }) {
               className="rounded-md mr-4 h-[40px] w-[40px] object-cover"
             />
             <h3 className="text-md font-semibold">
-              Author: {post.author.name}
+              <span className="font-normal">Author:</span> {post.author.name}
             </h3>
           </div>
           <p className=" text-sm text-gray-500">Date: {post.datePublishesd}</p>
@@ -65,21 +65,21 @@ export default function Page({ params }) {
 
         {/* content */}
         <div
-          className="prose max-w-full mb-16"
+          className="prose max-w-full mb-2"
           dangerouslySetInnerHTML={{ __html: post.content.html }}
         ></div>
+      </div>
 
-        {/* Displaying slug list */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Posts</h3>
-          <ul className="flex flex-wrap w-full gap-4">
-            {slugList.map((slugUrl, index) => (
-              <Link href={`/blog/article/${slugUrl}`} key={index}>
-                <Badge variant="">{slugUrl}</Badge>
-              </Link>
-            ))}
-          </ul>
-        </div>
+      {/* Displaying slug list */}
+      <div className="w-full max-w-[1200px] bg-white dark:bg-[#020817] shadow-lg rounded-lg p-4 lg:p-8 border border-gray-300 dark:border-gray-300/40">
+        <h3 className="text-lg font-semibold mb-2">Posts</h3>
+        <ul className="flex flex-wrap w-full gap-4">
+          {slugList.map((slugUrl, index) => (
+            <Link href={`/blog/article/${slugUrl}`} key={index}>
+              <Badge variant="">{slugUrl}</Badge>
+            </Link>
+          ))}
+        </ul>
       </div>
     </section>
   );
