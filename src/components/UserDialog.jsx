@@ -7,12 +7,12 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
-import { Card } from './ui/card';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import RecommendProductCard from './RecommendProductCard';
+import { getImgSrc } from '@/lib/utils';
 
 function UserDialog({ user }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -50,16 +50,24 @@ function UserDialog({ user }) {
 
 			<DialogContent>
 				<div className="flex gap-2">
-					<div className="w-28 h-full bg-gray-500 rounded-md"></div>
+					{user.img != 'no-posee-imagen' ? (
+						<img
+							alt={user.displayName}
+							src={getImgSrc('user', user.img)}
+							className="w-28 h-28 rounded-md object-center object-contain"
+						/>
+					) : (
+						<div className="w-28 h-28 bg-gray-500 rounded-md"></div>
+					)}
 					<div className="space-y-1">
 						<p className="text-lg font-semibold text-slate-900 dark:text-slate-200">
 							{user.displayName}
 						</p>
 						<p className="text-md font-medium text-slate-800 dark:text-slate-200">
-							{user.email}
+							{user.gender == 'F' ? 'Female' : 'Male'}
 						</p>
 						<p className="text-sm text-slate-700 dark:text-slate-200">
-							{user.skinType}
+							{user.skinType} skin
 						</p>
 					</div>
 				</div>
@@ -102,14 +110,19 @@ function UserDialog({ user }) {
 								id="search"
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
-								className="border-none focus-visible:ring-0 h-fit p-1"
+								className="border-none focus-visible:ring-1 h-fit p-1"
 							/>
 							<Label htmlFor="search">
 								<Search className="text-gray-400" />
 							</Label>
 						</div>
 
-						<Button className="px-4 py-2 h-fit rounded-xl">Enviar</Button>
+						<Button
+							className="px-4 py-2 h-fit rounded-xl bg-[#00A7D7] hover:bg-[#00A7D7]"
+							disabled={selectedProducts.length < 1}
+						>
+							Enviar
+						</Button>
 					</div>
 					<div>
 						{productsData?.products?.map((product) => (

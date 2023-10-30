@@ -44,7 +44,7 @@ function LoginForm() {
 		}
 
 		//handle success
-		router.push('/');
+		router.push('/home');
 	}
 
 	return (
