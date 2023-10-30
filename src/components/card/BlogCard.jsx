@@ -27,9 +27,9 @@ export default function BlogCard({
           <Image
             src={coverPhoto?.url}
             alt="Picture of the product"
-            className="rounded-md max-w-full h-[240px] object-cover"
-            width={500}
-            height={500}
+            className="rounded-md w-full lg:h-[240px] object-cover"
+            width={600}
+            height={600}
           />
         </div>
 
