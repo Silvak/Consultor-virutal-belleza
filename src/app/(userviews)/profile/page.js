@@ -5,10 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/services/product.services";
 import Link from "next/link";
 import Image from "next/image";
+
+//components
 import JustifyContent from "@/components/JustifyContent";
 import Carousel from "@/components/Carousel";
 import ProductCard from "@/components/card/ProductCard";
 import Pagination from "@/components/Pagination";
+import UserInfo from "@/components/UserInfo";
 
 const data = [
   {
@@ -48,6 +51,14 @@ const data = [
   },
 ];
 
+/**
+ * The function exports a React component that renders a page with user information, recommended
+ * products, specialist recommendations, and a history section.
+ * @returns The `Page` component is returning a JSX structure that represents the layout and content of
+ * a web page. It includes various elements such as headings, a carousel, product cards, pagination,
+ * and a history section. The content of some elements is conditionally rendered based on the `status`
+ * and `productsData` variables.
+ */
 export default function Page() {
   const [pageNumber, setPageNumber] = useState(1);
   const onPageChange = (page) => setPageNumber(page);
@@ -63,26 +74,11 @@ export default function Page() {
         offset,
       }),
   });
+
   return (
     <div className="flex flex-col justify-center bg-gray-100 dark:bg-gray-100/10 py-16 px-4 lg:px-0">
       <JustifyContent width={1200}>
-        <div className="flex flex-col lg:flex-row gap-8 lg-p-0">
-          <Image
-            src="/assets/skin.jpg"
-            className="bg-gray-200 rounded-md shadow-lg h-[250px] w-full lg:min-w-[250px] lg:max-w-[250px] object-cover"
-            width={300}
-            height={300}
-          />
-
-          <div className="flex flex-col w-full gap-8">
-            <div className="bg-white dark:bg-[#020817] w-full shadow-lg p-4">
-              a
-            </div>
-            <div className="bg-white dark:bg-[#020817] w-full h-full shadow-lg p-4">
-              a
-            </div>
-          </div>
-        </div>
+        <UserInfo />
       </JustifyContent>
 
       <JustifyContent width={1212}>
