@@ -10,13 +10,13 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import JustifyContent from "@/components/JustifyContent";
 import Carousel from "@/components/Carousel";
-import Footer from "@/components/Footer";
+import BlogSection from "@/components/blog/BlogSection";
 
 //table
 import Pagination from "@/components/Pagination";
 import ProductCard from "@/components/card/ProductCard";
 import CategoryCard from "@/components/card/CategoryCard";
-import BlogCard from "@/components/card/BlogCard";
+import Link from "next/link";
 
 const data = [
   {
@@ -163,20 +163,14 @@ export default function Page() {
         </div>
         <JustifyContent width={1200}>
           <h3 className="text-2xl mt-16 mb-6 font-semibold">Blog</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {status == "success" &&
-              productsData?.products?.map((product) => (
-                <BlogCard key={product._id} product={product} />
-              ))}
-          </div>
-          <Button className="bg-[#7E8EFF] text-xl px-8 h-[46px] w-full mt-8 shadow-lg">
-            Todas las entradas
-          </Button>
+          <BlogSection />
+          <Link href="/blog">
+            <Button className="bg-[#7E8EFF] text-xl px-8 h-[46px] w-full mt-8 shadow-lg">
+              Todas las entradas
+            </Button>
+          </Link>
         </JustifyContent>
       </section>
-
-      {/* footer */}
-      <Footer />
     </div>
   );
 }
