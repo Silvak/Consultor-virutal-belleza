@@ -8,7 +8,7 @@ export default function RootLayout({ children }) {
       <Navbar />
 
       {/* Page Content */}
-      <div className="mt-[56px] min-h-[70vh]">{children}</div>
+      <div className="pt-[56px] min-h-[70vh]">{children}</div>
       {/* footer */}
       <Footer />
     </>

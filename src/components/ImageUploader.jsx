@@ -6,6 +6,7 @@ import { uploadUserImage } from "@/services/user.services";
 import ModalFinished from "./ModalFinished";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 function ImageUploader({ onImageSelect }) {
   const fileInputRef = useRef(null);
@@ -63,7 +64,7 @@ function ImageUploader({ onImageSelect }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-white dark:bg-[#020817] px-8 py-8 lg:px-10 rounded-md shadow-md">
       <ModalFinished isVisible={showLoadingModal}>
         <h1 className="ml-2 px-20 text-2xl pb-3 font-medium">Analizando</h1>
         <div className="border-t-8 ml-20 flex flex-col justify-center items-center border-[#7E8EFF] rounded-full w-36 h-36 animate-spin"></div>
@@ -99,41 +100,43 @@ function ImageUploader({ onImageSelect }) {
         </div>
       </ModalFinished>
 
-      <div className="flex flex-col md:flex-row pt-5 pb-4 items-center w-full">
-        <div className="px-4 md:px-20 pb-10 md:pb-20">
-          <h1 className="text-5xl md:text-4xl font-bold mb-4">
+      <div className="flex flex-col lg:flex-row  w-full">
+        <div className="">
+          <h1 className="text-2xl md:text-4xl font-semibold mb-4">
             Consultor de belleza
           </h1>
-          <p className="text-lg mb-2 w-full">
+          <p className="w-full lg:w-[80%]">
             Descubre qué tipo de piel tienes y recibe recomendaciones
             personalizadas para realzar tu belleza. ¡Sólo sube una imagen clara
             de tu rostro y deja que nuestro consultor de belleza haga el resto!
           </p>
 
-          <h2 className="text-2xl pt-4 font-semibold mb-2">Requerimientos</h2>
-          <ul className="text-base">
-            <li>
-              1 - Asegúrate de que la imagen sea clara y esté bien iluminada.
+          <h2 className="text-xl pt-12 font-semibold">Requerimientos</h2>
+          <ul className="text-base w-full lg:w-[80%] space-y-3 mt-4 pl-4 list-decimal">
+            <li className="">
+              Asegúrate de que la imagen sea clara y esté bien iluminada.
             </li>
-            <li>
-              2 - Tu rostro debe estar limpio, sin maquillaje y con el cabello
+            <li className="">
+              Tu rostro debe estar limpio, sin maquillaje y con el cabello
               recogido o apartado de la cara.
             </li>
-            <li>
-              3 - La imagen debe ser frontal, mostrando toda tu cara y evitando
+            <li className="">
+              La imagen debe ser frontal, mostrando toda tu cara y evitando
               sombras.
             </li>
-            <li>
-              4 - El formato de la imagen debe ser JPG, PNG o GIF y no debe
-              exceder los 5MB de tamaño.
+            <li className="">
+              El formato de la imagen debe ser JPG, PNG o GIF y no debe exceder
+              los 5MB de tamaño.
             </li>
-            <li>
-              5 - Es importante que la foto sea reciente para obtener resultados
-              más precisos.
+            <li className="">
+              Es importante que la foto sea reciente para obtener resultados más
+              precisos.
             </li>
           </ul>
         </div>
-        <div className="w-full md:max-w-lg pr-4 md:pr-16">
+
+        {/* Input */}
+        <div className="flex justify-center w-full h-full lg:max-w-[500px] mt-12 lg:mt-0">
           <input
             type="file"
             accept="image/*"
@@ -142,7 +145,7 @@ function ImageUploader({ onImageSelect }) {
             onChange={handleImageChange}
           />
           <div
-            className="flex-grow relative ml-2 w-full md:w-96 h-56 md:h-[442px] border rounded mb-4 bg-gray-100 shadow-md"
+            className="flex-grow relative w-full md:w-96 h-56 lg:h-[500px] border rounded-md bg-gray-100 dark:bg-gray-100/10 shadow-md"
             style={{
               backgroundImage: `url(${previewImage})`,
               backgroundSize: "cover",
@@ -157,16 +160,20 @@ function ImageUploader({ onImageSelect }) {
           </div>
         </div>
       </div>
-      <div className="flex pb-14 flex-col md:flex-row justify-center items-center">
-        <button
-          onClick={handleButtonClick}
-          className="py-2 mx-2 md:mx-16 w-full bg-[#7E8EFF] text-white rounded-md shadow-md"
+
+      {/* Button summit */}
+      <div className="flex flex-col md:flex-row justify-center items-center mt-12">
+        <Button
+          className="bg-[#7E8EFF] text-xl h-[46px] w-full shadow-lg"
           disabled={uploading}
+          onClick={handleButtonClick}
         >
           {uploading ? "Cargando..." : "Sube tu foto"}
-        </button>
+        </Button>
       </div>
     </div>
   );
 }
 export default ImageUploader;
+
+//<button className="py-2 mx-2 md:mx-16 w-full bg-[#7E8EFF] text-white rounded-md shadow-md"></button>
