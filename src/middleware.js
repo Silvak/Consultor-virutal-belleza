@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
 import { withAuth } from 'next-auth/middleware';
-import { isExpired } from './lib/utils';
-
-const adminRoutes = [];
 
 /* The code is exporting a middleware function that checks if the requested URL path is included in the
 `adminRoutes` array and if the user's role is not 'admin'. If both conditions are true, it redirects

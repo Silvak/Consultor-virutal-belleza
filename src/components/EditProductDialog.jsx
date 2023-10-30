@@ -19,7 +19,6 @@ import {
 } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Textarea } from './ui/textarea';
 import { editProduct } from '@/services/product.services';
 import { useState } from 'react';
 import { Input } from './ui/input';
@@ -34,9 +33,15 @@ import {
 import { getImgSrc } from '@/lib/utils';
 
 const editProductSchema = z.object({
-	name: z.string(),
-	description: z.string(),
-	brand: z.string(),
+	name: z.string().min(2, 'Name must contain at least 2 characters'),
+	description: z
+		.string()
+		.min(2, 'Description must contain at least 2 characters'),
+	brand: z.string().min(2, 'Brand must contain at least 2 characters'),
+	category: z.string().min(2, 'Category must contain at least 2 characters'),
+	skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
+		required_error: 'You need to select a skin type',
+	}),
 });
 
 function EditProductDialog({ product }) {
@@ -215,7 +220,7 @@ function EditProductDialog({ product }) {
 
 						<Button
 							type="submit"
-							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
+							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
 						>
 							Edit
 						</Button>

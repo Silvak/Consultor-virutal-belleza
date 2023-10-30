@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { User } from 'lucide-react';
+import { getImgSrc } from '@/lib/utils';
 
 /**
  * The `SidebarContent` function is a React component that renders the content of a sidebar, including
@@ -11,17 +13,23 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
  * multiple child elements inside. The structure of the returned JSX is as follows:
  */
 export default function SidebarContent({ routes }) {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
+	console.log(session);
 
-	console.log('session', session);
 	return (
 		<div className="relative h-full w-full">
 			{/* User*/}
 			<div className="flex items-center w-full gap-4 border-b border-gray-200  px-8 py-7">
-				<Avatar className="w-24 h-24 rounded-sm">
-					<AvatarImage src="https://github.com/shadcn.png" />
-					<AvatarFallback>CN</AvatarFallback>
+				<Avatar className="rounded-md w-24 h-24">
+					{status == 'authenticated' && (
+						<AvatarImage src={getImgSrc('user', session.user.user.img)} />
+					)}
+
+					<AvatarFallback>
+						<User className="h-10 w-10" />
+					</AvatarFallback>
 				</Avatar>
+
 				<div className="mb-3">
 					<h3 className="text-lg font-semibold mt-2">Nombre Usuario</h3>
 					<p className="text-sm">user@gmail.com</p>
@@ -31,15 +39,55 @@ export default function SidebarContent({ routes }) {
 			{/* Navigation  */}
 			<ul className="flex flex-col gap-2 px-6 py-8 ">
 				<h4 className="font-semibold px-2">Menú</h4>
-				{routes.map(({ label, route }) => (
-					<li
-						id={route}
-						key={route}
-						className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
-					>
-						<Link href={route}>{label}</Link>
-					</li>
-				))}
+				{status === 'authenticated' &&
+					routes.map(({ label, route }) => (
+						<li
+							id={route}
+							key={route}
+							className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
+						>
+							<Link href={route}>{label}</Link>
+						</li>
+					))}
+				{status === 'authenticated' &&
+					session.user.user.rol === 'ADMIN_ROLE' && (
+						<li
+							id="/dashboard/admin"
+							key="/dashboard/admin"
+							className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
+						>
+							<Link href="/dashboard/admin">Dashboard</Link>
+						</li>
+					)}
+				{status === 'authenticated' &&
+					session.user.user.rol === 'ESPEC_ROLE' && (
+						<li
+							id="/dashboard/specialist"
+							key="/dashboard/specialist"
+							className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
+						>
+							<Link href="/dashboard/specialist">Dashboard</Link>
+						</li>
+					)}
+
+				{status == 'unauthenticated' && (
+					<>
+						<li
+							id="/login"
+							key="/login"
+							className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
+						>
+							<Link href="/login">Login</Link>
+						</li>
+						<li
+							id="/register"
+							key="/register"
+							className="flex items-center  h-[40px] hover:bg-slate-200 rounded-sm px-2 cursor-pointer"
+						>
+							<Link href="/register">Sign Up</Link>
+						</li>
+					</>
+				)}
 			</ul>
 
 			{/* Logout */}
