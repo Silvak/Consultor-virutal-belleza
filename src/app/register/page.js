@@ -20,7 +20,7 @@ function page() {
 
 				<p>
 					Already have an account?{' '}
-					<Link href="/login" className="text-[#00A7D7]">
+					<Link href="/login" className="text-[#7E8EFF]">
 						Sign In
 					</Link>
 				</p>

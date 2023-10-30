@@ -10,7 +10,7 @@ import { Image } from 'lucide-react';
 import { Input } from './ui/input';
 
 function UploadImageOnModal({ form }) {
-	const [previewImage, setPreviewImage] = useState(null);
+	const [previewImage, setPreviewImage] = useState(prevImage || null);
 
 	return (
 		<FormField

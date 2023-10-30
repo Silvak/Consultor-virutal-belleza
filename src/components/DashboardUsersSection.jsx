@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DashboardUserCard from './DahsboardUserCard';
+import DashboardUserCard from './DashboardUserCard';
 import DashboardCardsSkeletons from './DashboardCardSkeletons';
 import Pagination from './Pagination';
 import { useQuery } from '@tanstack/react-query';

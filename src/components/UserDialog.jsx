@@ -120,7 +120,7 @@ function UserDialog({ user }) {
 						</div>
 
 						<Button
-							className="px-4 py-2 h-fit rounded-xl bg-[#00A7D7] hover:bg-[#00A7D7]"
+							className="px-4 py-2 h-fit rounded-xl bg-[#7E8EFF] hover:bg-[#7E8EFF]"
 							disabled={!selectedProducts}
 						>
 							Enviar
