@@ -4,13 +4,20 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 
+/**
+ * The UserInfo component is a React component that displays user information, including their image,
+ * display name, email, gender, age, and skin type.
+ * @returns The function `UserInfo` returns a JSX element, which is a div containing an Image component
+ * and two divs. The first div contains the user's profile image, displayed using the Image component.
+ * The second div contains two nested divs. The first nested div displays the user's display name, and
+ * the second nested div displays the user's email, gender, age, and skin type.
+ */
 export default function UserInfo() {
   const [user, setUser] = useState(null);
   const { data: session, status } = useSession();
 
   useEffect(() => {
     if (session) {
-      console.log(session.user.user);
       setUser(session.user.user);
     }
   }, [session]);
@@ -34,7 +41,7 @@ export default function UserInfo() {
           <p>Email: {user?.email}</p>
           <p>Genero: {user?.gender}</p>
           <p>Edad: {user?.age}</p>
-          <p>Tipo de piel: {user.skinType}</p>
+          <p>Tipo de piel: {user?.skinType}</p>
         </div>
       </div>
     </div>
