@@ -4,19 +4,21 @@ import React from "react";
 
 export default function Page() {
   return (
-    <div className="flex mt-5 w-full m-auto">
-      {/* Columna izquierda */}
-      <div className="w-1/2 h-screen bg-gray-700 pr-4 rounded-e-md">
-        <div className="flex-1 bg-white w-full px-20 h-screen flex flex-col justify-start items-center">
+    <div className="flex flex-col lg:flex-row w-full m-auto">
+      {/* first column */}
+      <div className="hidden lg:flex w-full lg:w-1/2 h-screen bg-gray-700 pr-4 rounded-md mb-10 lg:mb-0">
+        <div className="flex-1 bg-white w-full p-6 lg:px-20 h-screen flex flex-col justify-center items-center">
           <img
-            src="/assets/login-image.png" // Corregido aquí
+            src="/assets/login-image.png"
             alt="Imagen login"
-            className="flex w-[300px] h-[400px]"
+            className="flex w-2/3 sm:w-1/2 lg:w-[300px] h-auto my-4"
           />
-          <h1 className="text-4xl font-bold mb-2">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
             Descubre tu consultor de belleza perfecto
           </h1>
-          <p className="text-lg">
+
+          {/* Description */}
+          <p className="text-sm sm:text-base lg:text-lg text-start">
             Explora y conecta con tu consultor de belleza ideal. Nuestra
             aplicación está diseñada para presentarte expertos en belleza que
             entienden tus necesidades específicas. Descubre recomendaciones
@@ -26,14 +28,14 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Columna derecha */}
-      <div className="flex-1 mt-40 mx-20">
-        <h1 className="font-bold text-3xl mb-6">Iniciar sesión</h1>
+      {/* second column */}
+      <div className="flex-1 p-6 lg:mx-20 mt-10 lg:mt-40">
+        <h1 className="font-bold text-2xl sm:text-3xl mb-6">Iniciar sesión</h1>
         <LoginForm />
         <div className="flex justify-center mt-4">
-          <span>No tienes una cuenta? </span>
-          <Link href="/register" legacyBehavior>
-            <a className="text-blue-500 hover:underline">Crear cuenta</a>
+          <span className="mr-1">No tienes una cuenta? </span>
+          <Link href="/register" className="text-blue-500 hover:underline">
+            Crear cuenta
           </Link>
         </div>
       </div>
