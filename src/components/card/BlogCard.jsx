@@ -13,13 +13,19 @@ import {
 import Link from "next/link";
 import { AiOutlineHeart, AiOutlineStar } from "react-icons/ai";
 
-export default function BlogCard({ post }) {
+export default function BlogCard({
+  title,
+  author,
+  coverPhoto,
+  slug,
+  datePublishesd,
+}) {
   return (
     <Card className="shadow-lg cursor-pointer hover:border-[#7E8EFF] select-none">
-      <Link href={`/blog/${post?.slug}`}>
+      <Link href={`/blog/article/${slug}`}>
         <div className="px-6 pt-6 w-full">
           <Image
-            src={"" || "/assets/palceholder.png"}
+            src={coverPhoto?.url}
             alt="Picture of the product"
             className="rounded-md max-w-full h-[240px] object-cover"
             width={500}
@@ -29,10 +35,12 @@ export default function BlogCard({ post }) {
 
         <CardHeader className="flex justify-between">
           <div className="flex flex-col gap-1 border-b pb-3">
-            <CardTitle>{post?.name || "Blog title"}</CardTitle>
+            <CardTitle>{title}</CardTitle>
           </div>
           <div className="flex gap-2 pt-2">
-            <AiOutlineHeart className="text-[24px]" /> <p>1k</p>
+            <AiOutlineHeart className="text-[24px]" /> <p>1k</p>{" "}
+            <p>{author?.name}</p>
+            <p>{datePublishesd}</p>
           </div>
         </CardHeader>
       </Link>
