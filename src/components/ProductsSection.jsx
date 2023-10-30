@@ -72,7 +72,6 @@ function ProductsSection() {
 					value={search}
 					onChange={(e) => {
 						setSearch(e.target.value);
-						setPageNumber(1);
 					}}
 					className="border-none focus-visible:ring-1 h-fit p-1 bg-gray-200"
 				/>
