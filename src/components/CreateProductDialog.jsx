@@ -108,7 +108,7 @@ function CreateProductDialog() {
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
-				<Button className="bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl">
+				<Button className="bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl">
 					Add Product
 				</Button>
 			</DialogTrigger>
@@ -241,7 +241,7 @@ function CreateProductDialog() {
 
 						<Button
 							type="submit"
-							className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
+							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
 						>
 							Add
 						</Button>

@@ -79,7 +79,7 @@ function ImageUploader({ onImageSelect }) {
             className="w-24 h-24"
           />
 
-          <h1 className="text-5xl pb-4 pt-4 text-center font-bold mt-4">
+          <h1 className="text-5xl md:text-4xl pb-4 pt-4 text-center font-bold mt-4">
             El análisis ha sido finalizado con éxito!
           </h1>
 
@@ -92,16 +92,19 @@ function ImageUploader({ onImageSelect }) {
             Tus resultados se han añadido a tu perfil.
           </p>
           <Link href="/profile">
-            <button className="mt-4 items-center w-full px-4 py-2 bg-[#7E8EFF] text-white text-base rounded">
+            <button className="mt-4 items-center w-full md:w-auto px-4 py-2 bg-[#7E8EFF] text-white text-base rounded">
               Ir al perfil
             </button>
           </Link>
         </div>
       </ModalFinished>
-      <div className="flex flex-row pt-10 pb-4 items-center w-full">
-        <div className="px-20 pb-20">
-          <h1 className="text-5xl font-bold  mb-4">Consultor de belleza</h1>
-          <p className="text-lg mb-2 w-full ">
+
+      <div className="flex flex-col md:flex-row pt-5 pb-4 items-center w-full">
+        <div className="px-4 md:px-20 pb-10 md:pb-20">
+          <h1 className="text-5xl md:text-4xl font-bold mb-4">
+            Consultor de belleza
+          </h1>
+          <p className="text-lg mb-2 w-full">
             Descubre qué tipo de piel tienes y recibe recomendaciones
             personalizadas para realzar tu belleza. ¡Sólo sube una imagen clara
             de tu rostro y deja que nuestro consultor de belleza haga el resto!
@@ -130,7 +133,7 @@ function ImageUploader({ onImageSelect }) {
             </li>
           </ul>
         </div>
-        <div className="w-full pr-16">
+        <div className="w-full md:max-w-lg pr-4 md:pr-16">
           <input
             type="file"
             accept="image/*"
@@ -139,7 +142,7 @@ function ImageUploader({ onImageSelect }) {
             onChange={handleImageChange}
           />
           <div
-            className="flex-grow relative w-96 h-[442px] border rounded mb-4 bg-gray-100 shadow-md"
+            className="flex-grow relative ml-2 w-full md:w-96 h-56 md:h-[442px] border rounded mb-4 bg-gray-100 shadow-md"
             style={{
               backgroundImage: `url(${previewImage})`,
               backgroundSize: "cover",
@@ -154,10 +157,10 @@ function ImageUploader({ onImageSelect }) {
           </div>
         </div>
       </div>
-      <div className="flex pb-14 flex-row justify-center items-center">
+      <div className="flex pb-14 flex-col md:flex-row justify-center items-center">
         <button
           onClick={handleButtonClick}
-          className="py-2 mx-16 w-full bg-[#7E8EFF] text-white rounded-md shadow-md"
+          className="py-2 mx-2 md:mx-16 w-full bg-[#7E8EFF] text-white rounded-md shadow-md"
           disabled={uploading}
         >
           {uploading ? "Cargando..." : "Sube tu foto"}
@@ -166,5 +169,4 @@ function ImageUploader({ onImageSelect }) {
     </div>
   );
 }
-
 export default ImageUploader;

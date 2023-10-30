@@ -5,16 +5,19 @@ import DeleteProductDialog from './DeleteProductDialog';
 import EditProductDialog from './EditProductDialog';
 import { Card } from './ui/card';
 import { AiOutlineStar } from 'react-icons/ai';
+import Image from 'next/image';
 
 function DashboardProductCard({ product }) {
 	return (
 		<Card className="flex gap-2 justify-between p-2 w-full m-auto my-4 shadow-lg">
 			<div className="flex gap-2">
 				{product.img != 'no-posee-imagen' ? (
-					<img
+					<Image
 						alt={product.name}
 						src={getImgSrc('product', product.img)}
 						className="w-28 h-28 rounded-md object-center object-contain"
+						width={112}
+						height={112}
 					/>
 				) : (
 					<div className="w-28 h-20 bg-gray-500 rounded-md"></div>

@@ -282,7 +282,7 @@ export default function RegisterForm() {
 
 				<Button
 					type="submit"
-					className="w-full bg-[#00A7D7] hover:bg-[#00A7D7] rounded-xl"
+					className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
 				>
 					Sign Up
 				</Button>
