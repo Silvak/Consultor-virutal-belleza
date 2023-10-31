@@ -1,46 +1,14 @@
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '@/services/product.services';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/scrollbar';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { Label } from './ui/label';
-import RecommendProductCard from './RecommendProductCard';
 import { getImgSrc } from '@/lib/utils';
-import useDebounce from '@/hooks/useDebounce';
-import DashboardCardsSkeletons from './DashboardCardSkeletons';
+import { getUser } from '@/services/user.services';
+import Image from 'next/image';
+import RecommendProduct from './RecommendProduct';
+import SkinCareHistory from './SkinCareHistory';
 
 function UserDialog({ user }) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [search, setSearch] = useState('');
-	const debouncedSearch = useDebounce(search, 500);
-	const [selectedProducts, setSelectedProducts] = useState(null);
-	const { data: productsData, status: productsStatus } = useQuery({
-		queryKey: ['products', { limit: 3, term: debouncedSearch }],
-		queryFn: () =>
-			getProducts({
-				limit: 3,
-				term: debouncedSearch,
-			}),
-	});
-
-	const swiperRef = useRef();
-
-	function toggleSelected(id) {
-		setSelectedProducts((prev) => {
-			if (prev == id) {
-				return null;
-			} else {
-				return id;
-			}
-		});
-	}
 
 	return (
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
@@ -53,10 +21,12 @@ function UserDialog({ user }) {
 			<DialogContent>
 				<div className="flex gap-2">
 					{user.img != 'no-posee-imagen' ? (
-						<img
+						<Image
 							alt={user.displayName}
 							src={getImgSrc('user', user.img)}
 							className="w-28 h-28 rounded-md object-center object-contain"
+							width={112}
+							height={112}
 						/>
 					) : (
 						<div className="w-28 h-28 bg-gray-500 rounded-md"></div>
@@ -73,78 +43,10 @@ function UserDialog({ user }) {
 						</p>
 					</div>
 				</div>
-				{productsStatus == 'success' && (
-					<div className="space-y-4 mt-4">
-						<h1 className=" font-semibold">Skin Care History</h1>
 
-						<div className="flex items-center gap-2">
-							<button onClick={() => swiperRef.current?.slidePrev()}>
-								<ChevronLeft />
-							</button>
-							<Swiper
-								onBeforeInit={(swiper) => {
-									swiperRef.current = swiper;
-								}}
-								spaceBetween={10}
-								slidesPerView={3}
-								modules={[Navigation]}
-								className="mySwiper w-[300px] md:w-[400px] flex gap-2"
-							>
-								{productsData?.products?.map((product) => (
-									<SwiperSlide key={product._id}>
-										<div className="w-full h-24 bg-gray-500 rounded-md"></div>
-									</SwiperSlide>
-								))}
-							</Swiper>
-							<button onClick={() => swiperRef.current?.slideNext()}>
-								<ChevronRight />
-							</button>
-						</div>
-					</div>
-				)}
+				<SkinCareHistory skinCareHistory={user.skinCare} />
 
-				<div className="w-full space-y-4 mt-4">
-					<h1 className=" font-semibold">Recommendations</h1>
-					<div className="flex items-center gap-4 ">
-						<div className="flex items-center gap-2 w-full">
-							<Input
-								type="text"
-								id="search"
-								value={search}
-								onChange={(e) => setSearch(e.target.value)}
-								className="border-none focus-visible:ring-1 h-fit p-1"
-							/>
-							<Label htmlFor="search">
-								<Search className="text-gray-400" />
-							</Label>
-						</div>
-
-						<Button
-							className="px-4 py-2 h-fit rounded-xl bg-[#7E8EFF] hover:bg-[#7E8EFF]"
-							disabled={!selectedProducts}
-						>
-							Enviar
-						</Button>
-					</div>
-					<div>
-						{productsStatus == 'pending' ? (
-							<DashboardCardsSkeletons />
-						) : productsData?.products.length > 0 ? (
-							productsData?.products?.map((product) => (
-								<RecommendProductCard
-									key={product._id}
-									product={product}
-									onClick={toggleSelected}
-									selected={selectedProducts == product._id}
-								/>
-							))
-						) : (
-							<p className="text-gray-400 text-center">
-								No products found with that name
-							</p>
-						)}
-					</div>
-				</div>
+				<RecommendProduct userId={user._id} />
 			</DialogContent>
 		</Dialog>
 	);
