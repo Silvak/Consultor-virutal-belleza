@@ -90,7 +90,7 @@ export default function RegisterForm() {
 			{
 				onSuccess: () => {
 					// handle success
-					router.push('/login');
+					router.push('/onboarding');
 				},
 				onError: (e) => {
 					//handle error

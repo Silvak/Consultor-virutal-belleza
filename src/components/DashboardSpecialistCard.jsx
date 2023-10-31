@@ -27,10 +27,7 @@ function DashboardSpecialistCard({ specialist, variant = 'secondary' }) {
 						{specialist.displayName}
 					</p>
 					<p className="text-md font-medium text-slate-800 dark:text-slate-200">
-						{specialist.specialty}
-					</p>
-					<p className="text-sm text-slate-700 dark:text-slate-300">
-						{specialist.description}
+						{specialist.email}
 					</p>
 				</div>
 			</div>
