@@ -25,3 +25,6 @@ export const getUsers = async ({ limit, offset }) => {
 };
 
 export const getUser = (userId) => apiInstanceWithAuth.get(`/user/${userId}`);
+
+export const addRecommendation = (recommendationData) =>
+	apiInstanceWithAuth.post(`/recomendation`, recommendationData);
