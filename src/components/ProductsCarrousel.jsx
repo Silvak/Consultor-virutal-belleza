@@ -43,7 +43,7 @@ export default function ProductsCarousel({ data }) {
 	return (
 		<div className="relative w-full h-min overflow-x-hidden">
 			<div
-				className={`flex transition-transform duration-500 ease-in-out justify-center`}
+				className={`flex transition-transform duration-500 ease-in-out `}
 				style={{ transform: `translateX(-${activeSlide * itemByScreenRes}%)` }}
 			>
 				{/* List items */}

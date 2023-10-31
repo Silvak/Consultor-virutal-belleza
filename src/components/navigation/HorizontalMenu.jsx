@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react';
  */
 export default function HorizontalMenu({ routes }) {
 	const { data: session, status } = useSession();
+
 	return (
 		<NavigationMenu className="hidden lg:flex">
 			<NavigationMenuList>
