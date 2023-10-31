@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '@/services/user.services';
 
 /**
  * The `SidebarContent` function is a React component that renders the content of a sidebar, including
@@ -14,6 +16,12 @@ import { getImgSrc } from '@/lib/utils';
  */
 export default function SidebarContent({ routes }) {
 	const { data: session, status } = useSession();
+	const { data: userData, status: userStatus } = useQuery({
+		queryKey: ['user'],
+		queryFn: () => getUser(session.user.user._id),
+		enabled: status == 'authenticated',
+		select: (data) => data?.data,
+	});
 	console.log(session);
 
 	return (
@@ -21,8 +29,8 @@ export default function SidebarContent({ routes }) {
 			{/* User*/}
 			<div className="flex items-center w-full gap-4 border-b border-gray-200  px-8 py-7">
 				<Avatar className="rounded-md w-24 h-24">
-					{status == 'authenticated' && (
-						<AvatarImage src={getImgSrc('user', session.user.user.img)} />
+					{status == 'authenticated' && userData && (
+						<AvatarImage src={getImgSrc('user', userData.img)} />
 					)}
 
 					<AvatarFallback>
@@ -31,8 +39,8 @@ export default function SidebarContent({ routes }) {
 				</Avatar>
 
 				<div className="mb-3">
-					<h3 className="text-lg font-semibold mt-2">Nombre Usuario</h3>
-					<p className="text-sm">user@gmail.com</p>
+					<h3 className="text-lg font-semibold mt-2">{userData.displayName}</h3>
+					<p className="text-sm">{userData.email}</p>
 				</div>
 			</div>
 

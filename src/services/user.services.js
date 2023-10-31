@@ -28,3 +28,14 @@ export const getUser = (userId) => apiInstanceWithAuth.get(`/user/${userId}`);
 
 export const addRecommendation = (recommendationData) =>
 	apiInstanceWithAuth.post(`/recomendation`, recommendationData);
+
+export const addSkinCare = (skinCareData) =>
+	apiInstanceWithAuth.post(`/skin-care`, skinCareData);
+
+export const uploadSkinCareImage = (skinCareId, image) => {
+	return apiInstanceWithAuth.post(`/files/skin-care/${skinCareId}`, image, {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+	});
+};
