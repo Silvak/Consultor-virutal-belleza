@@ -23,7 +23,7 @@ export default function DashboardProductsSection() {
 	return (
 		<section className="my-6">
 			<div className="w-full flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Products</h1>
+				<h1 className="text-2xl font-bold">Productos</h1>
 				<CreateProductDialog />
 			</div>
 			<div>

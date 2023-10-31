@@ -34,7 +34,7 @@ function UploadImageOnModal({ form }) {
 								{!previewImage && (
 									<>
 										<p className="text-gray-500 font-medium w-fit">
-											Upload user image
+											Sube imagen
 										</p>
 										<div className="w-32 h-28 flex items-center justify-center rounded-xl border-4 border-dotted border-gray-500 cursor-pointer">
 											<Image className="text-gray-500 w-12 h-12" />

@@ -9,29 +9,13 @@ import {
 	DialogHeader,
 	DialogTrigger,
 } from './ui/dialog';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from './ui/form';
+import { Form } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createProduct, uploadProductImage } from '@/services/product.services';
 import { useState } from 'react';
-import { Input } from './ui/input';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from './ui/select';
-import { getCategories } from '@/services/category.services';
-import { Image } from 'lucide-react';
 import UploadImageOnModal from './UploadImageOnModal';
+import ProductForm from './ProductForm';
 
 const createProductSchema = z
 	.object({
@@ -60,12 +44,6 @@ function CreateProductDialog() {
 			description: '',
 			brand: '',
 		},
-	});
-
-	const { data: categoriesData, status: categoriesStatus } = useQuery({
-		queryKey: ['categories'],
-		queryFn: getCategories,
-		select: (data) => data?.data,
 	});
 
 	const queryClient = useQueryClient();
@@ -109,13 +87,13 @@ function CreateProductDialog() {
 		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
 			<DialogTrigger asChild>
 				<Button className="bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl">
-					Add Product
+					Agregar
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Add Product
+						Agregar
 					</h2>
 				</DialogHeader>
 
@@ -126,124 +104,13 @@ function CreateProductDialog() {
 					>
 						<UploadImageOnModal form={form} />
 
-						<FormField
-							control={form.control}
-							name="name"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="font-semibold">Name</FormLabel>
-									<FormControl>
-										<Input
-											type="text"
-											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
-											placeholder="Name"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="description"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="font-semibold">Description</FormLabel>
-									<FormControl>
-										<Input
-											type="text"
-											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
-											placeholder="Description"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="brand"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="font-semibold">Brand</FormLabel>
-									<FormControl>
-										<Input
-											type="text"
-											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
-											placeholder="Brand"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="category"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Category</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger className="border-none focus:ring-1">
-												<SelectValue placeholder="Select a category" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{categoriesStatus === 'success' &&
-												categoriesData?.categories.map((category) => (
-													<SelectItem key={category._id} value={category._id}>
-														{category.title}
-													</SelectItem>
-												))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="skinTypeProduct"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Skin type</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<FormControl>
-											<SelectTrigger className="border-none focus:ring-1">
-												<SelectValue placeholder="Select a skin type" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											<SelectItem value="balanced">Balanced Skin</SelectItem>
-											<SelectItem value="oily">Oily Skin</SelectItem>
-											<SelectItem value="dry">Dry Skin</SelectItem>
-											<SelectItem value="combined">Combined Skin</SelectItem>
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+						<ProductForm form={form} />
 
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
 						>
-							Add
+							Agregar
 						</Button>
 					</form>
 				</Form>

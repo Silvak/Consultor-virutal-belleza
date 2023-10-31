@@ -14,7 +14,7 @@ function SkinCareHistory({ skinCareHistory }) {
 	return (
 		skinCareHistory.length > 0 && (
 			<section className="space-y-4 mt-4">
-				<h1 className=" font-semibold">Skin Care History</h1>
+				<h1 className=" font-semibold">Historial de Skin Care</h1>
 
 				<div className="flex items-center gap-2">
 					<button onClick={() => swiperRef.current?.slidePrev()}>

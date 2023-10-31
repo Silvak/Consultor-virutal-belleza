@@ -27,22 +27,31 @@ export default function SidebarContent({ routes }) {
 	return (
 		<div className="relative h-full w-full">
 			{/* User*/}
-			<div className="flex items-center w-full gap-4 border-b border-gray-200  px-8 py-7">
-				<Avatar className="rounded-md w-24 h-24">
-					{status == 'authenticated' && userData && (
+			{status == 'authenticated' && userData && (
+				<div className="flex items-center w-full gap-4 border-b border-gray-200  px-8 py-7">
+					<Avatar className="rounded-md w-24 h-24">
 						<AvatarImage src={getImgSrc('user', userData.img)} />
-					)}
 
+						<AvatarFallback>
+							<User className="h-10 w-10" />
+						</AvatarFallback>
+					</Avatar>
+
+					<div className="mb-3">
+						<h3 className="text-lg font-semibold mt-2">
+							{userData.displayName}
+						</h3>
+						<p className="text-sm">{userData.email}</p>
+					</div>
+				</div>
+			)}
+			{status == 'unauthenticated' && (
+				<Avatar className="rounded-md w-24 h-24">
 					<AvatarFallback>
 						<User className="h-10 w-10" />
 					</AvatarFallback>
 				</Avatar>
-
-				<div className="mb-3">
-					<h3 className="text-lg font-semibold mt-2">{userData.displayName}</h3>
-					<p className="text-sm">{userData.email}</p>
-				</div>
-			</div>
+			)}
 
 			{/* Navigation  */}
 			<ul className="flex flex-col gap-2 px-6 py-8 ">

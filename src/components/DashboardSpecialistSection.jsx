@@ -1,36 +1,40 @@
-import { useState } from 'react';
-import DashboardUserCard from './DashboardUserCard';
-import DashboardCardsSkeletons from './DashboardCardSkeletons';
-import Pagination from './Pagination';
+import React, { useState } from 'react';
+import CreateSpecialistDialog from './CreateSpecialistDialog';
+import DashboardSpecialistCard from './DashboardSpecialistCard';
 import { useQuery } from '@tanstack/react-query';
+import Pagination from './Pagination';
+import DashboardCardsSkeletons from './DashboardCardSkeletons';
 import { getUsers } from '@/services/user.services';
 
-export default function DashboardUsersSection() {
+function DashboardSpecialistSection() {
 	const [pageNumber, setPageNumber] = useState(1);
 	const [limit, setLimit] = useState(3);
 	const onPageChange = (page) => setPageNumber(page);
 
 	const { data, status } = useQuery({
-		queryKey: ['users', pageNumber, limit, 'USER_ROLE'],
+		queryKey: ['users', pageNumber, limit, 'SPEC_ROLE'],
 		queryFn: () =>
 			getUsers({
 				limit,
 				offset: pageNumber,
-				term: 'USER_ROLE',
+				term: 'SPEC_ROLE',
 			}),
 	});
-
 	return (
-		<section className="my-6">
+		<>
 			<div className="w-full  m-auto my-6 flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Usuarios</h1>
+				<h1 className="text-2xl font-bold">Especialistas</h1>
+				<CreateSpecialistDialog />
 			</div>
 			<div>
 				{status == 'pending' && <DashboardCardsSkeletons />}
 				{status == 'success' && (
 					<>
-						{data?.users.map((user) => (
-							<DashboardUserCard key={user._id} user={user} />
+						{data?.users.map((specialist) => (
+							<DashboardSpecialistCard
+								key={specialist.id}
+								specialist={specialist}
+							/>
 						))}
 						<Pagination
 							currentPage={pageNumber}
@@ -41,6 +45,8 @@ export default function DashboardUsersSection() {
 					</>
 				)}
 			</div>
-		</section>
+		</>
 	);
 }
+
+export default DashboardSpecialistSection;
