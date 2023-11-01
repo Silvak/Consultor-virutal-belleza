@@ -17,7 +17,7 @@ function UploadImageOnModal({ form }) {
 			control={form.control}
 			name="image"
 			render={({ field: { name, value, disabled, onChange } }) => (
-				<FormItem className="w-full h-fit flex justify-center">
+				<FormItem className="w-full h-fit flex flex-col items-center justify-center">
 					<FormLabel className="flex flex-col gap-4 justify-center items-center">
 						<div className="flex flex-col items-center justify-center h-fit">
 							<div

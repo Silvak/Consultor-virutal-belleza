@@ -14,12 +14,12 @@ import {
 import { Trash } from 'lucide-react';
 import { Button } from './ui/button';
 import { deleteProduct } from '@/services/product.services';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from './ui/use-toast';
-import { set } from 'zod';
 
 function DeleteProductDialog({ id }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const queryClient = useQueryClient();
 	const { mutate } = useMutation({
 		mutationFn: deleteProduct(id),
 		onSuccess: () => {

@@ -26,7 +26,6 @@ const editProductSchema = z.object({
 		.string()
 		.min(2, 'Description must contain at least 2 characters'),
 	brand: z.string().min(2, 'Brand must contain at least 2 characters'),
-	category: z.string().min(2, 'Category must contain at least 2 characters'),
 	skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
 		required_error: 'You need to select a skin type',
 	}),
@@ -41,7 +40,6 @@ function EditProductDialog({ product }) {
 			description: product.description,
 			brand: product.brand,
 			productSkinType: product.skinTypeProduct,
-			category: product.category,
 		},
 	});
 	const { toast } = useToast();

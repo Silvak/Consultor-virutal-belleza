@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	Form,
 	FormControl,
 	FormField,
 	FormItem,
@@ -16,17 +15,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from './ui/select';
-import { Button } from './ui/button';
-import { useQuery } from '@tanstack/react-query';
-import { getCategories } from '@/services/category.services';
 
-function ProductForm({ form }) {
-	const { data: categoriesData, status: categoriesStatus } = useQuery({
-		queryKey: ['categories'],
-		queryFn: getCategories,
-		select: (data) => data?.data,
-	});
-
+function ProductForm({ form, categories }) {
 	return (
 		<>
 			<FormField
@@ -86,31 +76,32 @@ function ProductForm({ form }) {
 				)}
 			/>
 
-			<FormField
-				control={form.control}
-				name="category"
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Categoría</FormLabel>
-						<Select onValueChange={field.onChange} defaultValue={field.value}>
-							<FormControl>
-								<SelectTrigger className="border-none focus:ring-1">
-									<SelectValue placeholder="Selecciona una categoría" />
-								</SelectTrigger>
-							</FormControl>
-							<SelectContent>
-								{categoriesStatus === 'success' &&
-									categoriesData?.categories.map((category) => (
+			{categories && (
+				<FormField
+					control={form.control}
+					name="category"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Categoría</FormLabel>
+							<Select onValueChange={field.onChange} defaultValue={field.value}>
+								<FormControl>
+									<SelectTrigger className="border-none focus:ring-1">
+										<SelectValue placeholder="Selecciona una categoría" />
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									{categories.map((category) => (
 										<SelectItem key={category._id} value={category._id}>
 											{category.title}
 										</SelectItem>
 									))}
-							</SelectContent>
-						</Select>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			)}
 
 			<FormField
 				control={form.control}

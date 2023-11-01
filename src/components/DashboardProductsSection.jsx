@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Pagination from './Pagination';
 import { getProducts } from '@/services/product.services';
+import CreateCategoryDialog from './CreateCategoryDialog';
 
 export default function DashboardProductsSection() {
 	const [pageNumber, setPageNumber] = useState(1);
@@ -24,7 +25,11 @@ export default function DashboardProductsSection() {
 		<section className="my-6">
 			<div className="w-full flex justify-between items-center">
 				<h1 className="text-2xl font-bold">Productos</h1>
-				<CreateProductDialog />
+
+				<div className="flex gap-2">
+					<CreateCategoryDialog />
+					<CreateProductDialog />{' '}
+				</div>
 			</div>
 			<div>
 				{status == 'pending' && <DashboardCardsSkeletons />}

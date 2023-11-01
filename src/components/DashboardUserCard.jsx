@@ -41,7 +41,7 @@ function DashboardUserCard({ user }) {
 			</div>
 			{status === 'authenticated' && session.user.user.rol == 'ADMIN_ROLE' && (
 				<div>
-					<DeleteUserDialog id={user.id} />
+					<DeleteUserDialog id={user._id} />
 				</div>
 			)}
 		</Card>

@@ -12,12 +12,13 @@ import {
 } from './ui/alert-dialog';
 import { Trash } from 'lucide-react';
 import { Button } from './ui/button';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteUser } from '@/services/user.services';
 import { useState } from 'react';
 
 function DeleteUserDialog({ id }) {
 	const [open, setOpen] = useState(false);
+	const queryClient = useQueryClient();
 	const { mutate } = useMutation({
 		mutationFn: deleteUser(id),
 		onSuccess: () => {

@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { getImgSrc } from '@/lib/utils';
 import { User } from 'lucide-react';
 import { getUser, uploadUserImage } from '@/services/user.services';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Input } from './ui/input';
 import { useToast } from './ui/use-toast';
 

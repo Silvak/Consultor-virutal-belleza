@@ -18,6 +18,7 @@ import UploadImageOnModal from './UploadImageOnModal';
 import ProductForm from './ProductForm';
 import { useToast } from './ui/use-toast';
 import { Loader2 } from 'lucide-react';
+import { editCategory, getCategories } from '@/services/category.services';
 
 const createProductSchema = z
 	.object({
@@ -51,6 +52,12 @@ function CreateProductDialog() {
 
 	const queryClient = useQueryClient();
 
+	const { data: categoriesData, status: categoriesStatus } = useQuery({
+		queryKey: ['categories'],
+		queryFn: getCategories,
+		select: (data) => data?.data,
+	});
+
 	const { mutate, status } = useMutation({
 		mutationFn: createProduct,
 		onSuccess: () => {
@@ -59,13 +66,19 @@ function CreateProductDialog() {
 	});
 
 	function onSubmit(productData) {
+		console.log('x');
+		console.log(
+			...categoriesData.categories
+				.filter((category) => category._id == productData.category)[0]
+				.products.map((product) => product._id)
+		);
 		mutate(
 			{
 				name: productData.name,
 				description: productData.description,
 				brand: productData.brand,
-				category: productData.category,
 				skinTypeProduct: productData.skinTypeProduct,
+				category: productData.category,
 			},
 			{
 				onSuccess: async (data) => {
@@ -73,12 +86,30 @@ function CreateProductDialog() {
 						const formData = new FormData();
 						formData.append('image', productData.image, productData.image.name);
 						await uploadProductImage(data.data._id, formData);
+					} catch (e) {
+						toast({
+							title: 'Error al agregar la imagen del producto',
+							variant: 'destructive',
+						});
+						console.log(e);
+					}
+
+					try {
+						await editCategory(productData.category, {
+							products: [
+								...categoriesData.categories
+									.filter((category) => category._id == productData.category)[0]
+									.products.map((product) => product._id),
+								data.data._id,
+							],
+						});
+
 						form.reset();
 						toast({ title: 'Producto agregado' });
 						setIsOpen(false);
 					} catch (e) {
 						toast({
-							title: 'Error al agregar la imagen del producto',
+							title: 'Error al agregar producto a la categoría',
 							variant: 'destructive',
 						});
 						console.log(e);
@@ -104,13 +135,13 @@ function CreateProductDialog() {
 		>
 			<DialogTrigger asChild>
 				<Button className="bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl">
-					Agregar
+					Agregar Producto
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Agregar
+						Agregar Producto
 					</h2>
 				</DialogHeader>
 
@@ -121,7 +152,7 @@ function CreateProductDialog() {
 					>
 						<UploadImageOnModal form={form} />
 
-						<ProductForm form={form} />
+						<ProductForm form={form} categories={categoriesData?.categories} />
 
 						<Button
 							type="submit"
