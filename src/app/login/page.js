@@ -1,19 +1,27 @@
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 
+/**
+ * The function returns a JSX component that renders a login page with two columns, one for a
+ * description and image, and the other for a login form.
+ * @returns a JSX element, which represents the structure and content of a web page.
+ */
 export default function Page() {
   return (
-    <div className="flex flex-col lg:flex-row w-full m-auto">
+    <div className="flex flex-col lg:flex-row w-full h-screen m-auto">
       {/* first column */}
-      <div className="hidden lg:flex w-full lg:w-1/2 h-screen bg-gray-700 pr-4 rounded-md mb-10 lg:mb-0">
-        <div className="flex-1 bg-white w-full p-6 lg:px-20 h-screen flex flex-col justify-center items-center">
-          <img
+      <div className="hidden lg:flex w-full lg:w-1/2 h-screen bg-gray-600/90 dark:bg-gray-600/40   pr-5 rounded-lg mb-10 lg:mb-0">
+        <div className="flex-col justify-center items-center flex-1 bg-white dark:bg-white/10 w-full lg:px-20 flex  rounded-lg">
+          <Image
             src="/assets/login-image.png"
             alt="Imagen login"
-            className="flex w-2/3 sm:w-1/2 lg:w-[300px] h-auto my-4"
+            className="flex w-2/3 sm:w-1/2 lg:w-[400px] h-auto my-4"
+            width={400}
+            height={400}
           />
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-4">
             Descubre tu consultor de belleza perfecto
           </h1>
 
@@ -29,14 +37,18 @@ export default function Page() {
       </div>
 
       {/* second column */}
-      <div className="flex-1 p-6 lg:mx-20 mt-10 lg:mt-40">
-        <h1 className="font-bold text-2xl sm:text-3xl mb-6">Iniciar sesión</h1>
-        <LoginForm />
-        <div className="flex justify-center mt-4">
-          <span className="mr-1">No tienes una cuenta? </span>
-          <Link href="/register" className="text-blue-500 hover:underline">
-            Crear cuenta
-          </Link>
+      <div className="flex justify-center items-center px-8 flex-1 bg-[#E6E6E6] dark:bg-inherit">
+        <div className="w-full lg:max-w-[600px]">
+          <h1 className="font-semibold text-2xl sm:text-2xl mb-8">
+            Iniciar sesión
+          </h1>
+          <LoginForm />
+          <div className="flex justify-center mt-6 text-sm">
+            <span className="mr-1 text-gray-500">¿No tienes una cuenta?</span>
+            <Link href="/register" className="text-blue-500 hover:underline">
+              Crear cuenta
+            </Link>
+          </div>
         </div>
       </div>
     </div>
