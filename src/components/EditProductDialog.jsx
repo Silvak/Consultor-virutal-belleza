@@ -14,10 +14,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { editProduct } from '@/services/product.services';
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
 import Image from 'next/image';
 import ProductForm from './ProductForm';
+import { useToast } from './ui/use-toast';
 
 const editProductSchema = z.object({
 	name: z.string().min(2, 'Name must contain at least 2 characters'),
@@ -43,10 +44,11 @@ function EditProductDialog({ product }) {
 			category: product.category,
 		},
 	});
+	const { toast } = useToast();
 
 	const queryClient = useQueryClient();
 
-	const { mutate } = useMutation({
+	const { mutate, status } = useMutation({
 		mutationFn: editProduct(product._id),
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
@@ -58,16 +60,23 @@ function EditProductDialog({ product }) {
 		console.log(productData);
 		mutate(productData, {
 			onSuccess: () => {
+				toast({ title: 'Product edited successfully' });
 				form.reset();
 			},
 			onError: (error) => {
+				toast({ title: 'Error editing product', variant: 'destructive' });
 				console.log(error);
 			},
 		});
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={() =>
+				setIsOpen((prev) => (status == 'pending' ? prev : !prev))
+			}
+		>
 			<DialogTrigger asChild>
 				<Button className="bg-transparent text-black hover:bg-slate-300 dark:text-slate-200">
 					<Pencil className="h-5 w-5" />
@@ -76,7 +85,7 @@ function EditProductDialog({ product }) {
 			<DialogContent>
 				<DialogHeader>
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Edit Product
+						Editar Producto
 					</h2>
 				</DialogHeader>
 
@@ -100,8 +109,16 @@ function EditProductDialog({ product }) {
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
+							disabled={status == 'pending'}
 						>
-							Edit
+							{status == 'pending' ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Espera por favor
+								</>
+							) : (
+								'Editar'
+							)}
 						</Button>
 					</form>
 				</Form>

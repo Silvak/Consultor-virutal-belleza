@@ -25,6 +25,9 @@ import {
 } from './ui/select';
 import { useRouter } from 'next/navigation';
 import { Checkbox } from './ui/checkbox';
+import { Loader2 } from 'lucide-react';
+import { use } from 'react';
+import { useToast } from './ui/use-toast';
 
 const registerSchema = z
 	.object({
@@ -72,14 +75,14 @@ export default function RegisterForm() {
 		},
 	});
 
-	const { mutate } = useMutation({
+	const { mutate, status } = useMutation({
 		mutationFn: signUp,
 	});
 
 	const router = useRouter();
+	const { toast } = useToast();
 
 	function onSubmit(userData) {
-		console.log(userData);
 		mutate(
 			{
 				...userData,
@@ -90,10 +93,12 @@ export default function RegisterForm() {
 			{
 				onSuccess: () => {
 					// handle success
+					toast({ title: 'Usuario creado' });
 					router.push('/onboarding');
 				},
 				onError: (e) => {
 					//handle error
+					toast({ title: 'Error creando usuario', variant: 'destructive' });
 					console.log(e);
 				},
 			}
@@ -113,7 +118,7 @@ export default function RegisterForm() {
 							name="displayName"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Username</FormLabel>
+									<FormLabel>Nombre de usuario</FormLabel>
 									<FormControl>
 										<Input
 											placeholder="Mary25"
@@ -132,7 +137,7 @@ export default function RegisterForm() {
 							name="email"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel>Correo Electrónico</FormLabel>
 									<FormControl>
 										<Input
 											placeholder="email.@example.com"
@@ -151,7 +156,7 @@ export default function RegisterForm() {
 							name="password"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Password</FormLabel>
+									<FormLabel>Contraseña</FormLabel>
 									<FormControl>
 										<Input
 											type="password"
@@ -169,7 +174,7 @@ export default function RegisterForm() {
 							name="passwordConfirm"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Confirm Password</FormLabel>
+									<FormLabel>Confirma contraseña</FormLabel>
 									<FormControl>
 										<Input
 											type="password"
@@ -188,7 +193,7 @@ export default function RegisterForm() {
 							name="age"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Age</FormLabel>
+									<FormLabel>Edad</FormLabel>
 									<FormControl>
 										<Input
 											type="number"
@@ -206,14 +211,14 @@ export default function RegisterForm() {
 							name="skinType"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Skin type</FormLabel>
+									<FormLabel>Tipo de piel</FormLabel>
 									<Select
 										onValueChange={field.onChange}
 										defaultValue={field.value}
 									>
 										<FormControl>
 											<SelectTrigger className="border-none focus:ring-1 bg-gray-200">
-												<SelectValue placeholder="Select a skin type" />
+												<SelectValue placeholder="Selecciona un tipo de piel" />
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
@@ -233,7 +238,7 @@ export default function RegisterForm() {
 							name="gender"
 							render={({ field }) => (
 								<FormItem className="space-y-3">
-									<FormLabel>Gender</FormLabel>
+									<FormLabel>Genero</FormLabel>
 									<FormControl>
 										<RadioGroup
 											onValueChange={field.onChange}
@@ -244,13 +249,13 @@ export default function RegisterForm() {
 												<FormControl>
 													<RadioGroupItem value="F" />
 												</FormControl>
-												<FormLabel className="font-normal">Female</FormLabel>
+												<FormLabel className="font-normal">Femenino</FormLabel>
 											</FormItem>
 											<FormItem className="flex items-center space-x-3 space-y-0">
 												<FormControl>
 													<RadioGroupItem value="M" />
 												</FormControl>
-												<FormLabel className="font-normal">Male</FormLabel>
+												<FormLabel className="font-normal">Masculino</FormLabel>
 											</FormItem>
 										</RadioGroup>
 									</FormControl>
@@ -271,7 +276,7 @@ export default function RegisterForm() {
 											/>
 										</FormControl>
 										<div className="space-y-1 leading-none">
-											<FormLabel>Accept terms and conditions</FormLabel>
+											<FormLabel>Aceptar los términos y condiciones</FormLabel>
 										</div>
 									</FormItem>
 								)}
@@ -284,7 +289,14 @@ export default function RegisterForm() {
 					type="submit"
 					className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
 				>
-					Sign Up
+					{status == 'pending' ? (
+						<>
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+							Espera por favor
+						</>
+					) : (
+						'Registrarse'
+					)}
 				</Button>
 			</form>
 		</Form>

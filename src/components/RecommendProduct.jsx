@@ -9,6 +9,7 @@ import useDebounce from '@/hooks/useDebounce';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { addRecommendation } from '@/services/user.services';
 import { getProducts } from '@/services/product.services';
+import { useToast } from './ui/use-toast';
 
 function RecommendProduct({ userId }) {
 	const [search, setSearch] = useState('');
@@ -26,6 +27,7 @@ function RecommendProduct({ userId }) {
 		mutationKeyKey: ['recommendations', { userId, products: selectedProducts }],
 		mutationFn: addRecommendation,
 	});
+	const { toast } = useToast();
 
 	function toggleSelected(id) {
 		setSelectedProducts((prev) => {
@@ -43,6 +45,17 @@ function RecommendProduct({ userId }) {
 			{
 				onSuccess: () => {
 					setSelectedProducts([]);
+					toast({
+						title: 'Recomendaciones enviadas correctamente',
+						status: 'success',
+					});
+				},
+				onError: (error) => {
+					toast({
+						title: 'Ha ocurrido un error al enviar las recomendaciones',
+						status: 'error',
+					});
+					console.log(error);
 				},
 			}
 		);

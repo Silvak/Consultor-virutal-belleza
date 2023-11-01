@@ -7,6 +7,8 @@ import { User } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '@/services/user.services';
+import { useToast } from '../ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 /**
  * The `SidebarContent` function is a React component that renders the content of a sidebar, including
@@ -23,6 +25,14 @@ export default function SidebarContent({ routes }) {
 		select: (data) => data?.data,
 	});
 	console.log(session);
+	const { toast } = useToast();
+	const router = useRouter();
+
+	function onSignOut() {
+		signOut();
+		toast({ title: 'Sesión cerrada' });
+		router.push('/login');
+	}
 
 	return (
 		<div className="relative h-full w-full">
@@ -109,7 +119,7 @@ export default function SidebarContent({ routes }) {
 
 			{/* Logout */}
 			<div className="absolute bottom-0  w-full flex justify-left items-center border-t border-gray-200 px-8 py-4">
-				<Button variant="outline" onClick={() => signOut()}>
+				<Button variant="outline" onClick={onSignOut}>
 					Logout
 				</Button>
 			</div>
