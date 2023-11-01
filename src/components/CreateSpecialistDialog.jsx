@@ -114,7 +114,7 @@ function CreateSpecialistDialog() {
 		>
 			<DialogTrigger asChild>
 				<Button className="bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl">
-					Agregar
+					Agregar Especialista
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="h-fit">
