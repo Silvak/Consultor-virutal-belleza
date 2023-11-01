@@ -19,9 +19,9 @@ function page() {
 				<RegisterForm />
 
 				<p>
-					Already have an account?{' '}
+					Ya tienes una cuenta?{' '}
 					<Link href="/login" className="text-[#7E8EFF]">
-						Sign In
+						Inicia sesión
 					</Link>
 				</p>
 			</div>

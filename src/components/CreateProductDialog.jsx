@@ -16,6 +16,8 @@ import { createProduct, uploadProductImage } from '@/services/product.services';
 import { useState } from 'react';
 import UploadImageOnModal from './UploadImageOnModal';
 import ProductForm from './ProductForm';
+import { useToast } from './ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const createProductSchema = z
 	.object({
@@ -45,10 +47,11 @@ function CreateProductDialog() {
 			brand: '',
 		},
 	});
+	const { toast } = useToast();
 
 	const queryClient = useQueryClient();
 
-	const { mutate } = useMutation({
+	const { mutate, status } = useMutation({
 		mutationFn: createProduct,
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
@@ -71,12 +74,21 @@ function CreateProductDialog() {
 						formData.append('image', productData.image, productData.image.name);
 						await uploadProductImage(data.data._id, formData);
 						form.reset();
+						toast({ title: 'Producto agregado' });
 						setIsOpen(false);
 					} catch (e) {
+						toast({
+							title: 'Error al agregar la imagen del producto',
+							variant: 'destructive',
+						});
 						console.log(e);
 					}
 				},
 				onError: (error) => {
+					toast({
+						title: 'Error al agregar el producto',
+						variant: 'destructive',
+					});
 					console.log(error);
 				},
 			}
@@ -84,7 +96,12 @@ function CreateProductDialog() {
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={() =>
+				setIsOpen((prev) => (status == 'pending' ? prev : !prev))
+			}
+		>
 			<DialogTrigger asChild>
 				<Button className="bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl">
 					Agregar
@@ -109,8 +126,16 @@ function CreateProductDialog() {
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
+							disabled={status == 'pending'}
 						>
-							Agregar
+							{status == 'pending' ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Espera por favor
+								</>
+							) : (
+								'Agregar'
+							)}
 						</Button>
 					</form>
 				</Form>

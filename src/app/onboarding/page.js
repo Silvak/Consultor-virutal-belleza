@@ -2,8 +2,11 @@
 import Link from 'next/link';
 import skin from '../../../public/assets/skin.jpeg';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Onboarding() {
+	const router = useRouter();
+
 	return (
 		<div className="min-h-screen flex">
 			<div className="flex-1 bg-white">
@@ -21,7 +24,10 @@ export default function Onboarding() {
 						única para todos cuando se trata de belleza y cuidado personal.
 					</p>
 					<Link href="/home">
-						<button className="bg-white animate-pulsate text-custom-blue px-10 py-4 rounded-lg font-bold text-lg cursor-pointer shadow-custom-blue">
+						<button
+							className="bg-white animate-pulsate text-custom-blue px-10 py-4 rounded-lg font-bold text-lg cursor-pointer shadow-custom-blue"
+							onClick={() => router.push('/login')}
+						>
 							Empezar
 						</button>
 					</Link>

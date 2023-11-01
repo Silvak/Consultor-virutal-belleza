@@ -17,13 +17,13 @@ import {
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { ScrollArea } from './ui/scroll-area';
 
-function SpecialistForm({ form }) {
+function SpecialistForm({ form, variant }) {
 	return (
 		<ScrollArea className="h-[400px] w-full rounded-md">
 			<div className="space-y-4 p-1 pr-4">
 				<FormField
 					control={form.control}
-					name="username"
+					name="displayName"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className="font-semibold">Nombre</FormLabel>
@@ -58,6 +58,48 @@ function SpecialistForm({ form }) {
 						</FormItem>
 					)}
 				/>
+
+				{variant === 'create' && (
+					<>
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="font-semibold">Contraseña</FormLabel>
+									<FormControl>
+										<Input
+											type="password"
+											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="passwordConfirm"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="font-semibold">
+										Confirmar contraseña
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="password"
+											className="border-none focus-visible:ring-1 rounded-xl h-fit p-2"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</>
+				)}
 
 				<FormField
 					control={form.control}

@@ -14,10 +14,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProduct } from '@/services/product.services';
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
 import Image from 'next/image';
 import SpecialistForm from './SpecialistForm';
+import { useToast } from './ui/use-toast';
 
 const registerSchema = z.object({
 	username: z.string().min(2, 'Username must contain at least 8 characters'),
@@ -48,9 +49,11 @@ function EditSpecialistDialog({ specialist }) {
 		},
 	});
 
+	const { toast } = useToast();
+
 	const queryClient = useQueryClient();
 
-	const { mutate } = useMutation({
+	const { mutate, status } = useMutation({
 		mutationFn: createProduct,
 		onSuccess: () => {
 			queryClient.invalidateQueries('specialists');
@@ -60,16 +63,30 @@ function EditSpecialistDialog({ specialist }) {
 	function onSubmit(productData) {
 		mutate(productData, {
 			onSuccess: () => {
+				setIsOpen(false);
+				toast({
+					title: 'El especialista ha sido editado correctamente',
+					status: 'success',
+				});
 				form.reset();
 			},
 			onError: (error) => {
+				toast({
+					title: 'Ha ocurrido un error al editar el especialista',
+					status: 'error',
+				});
 				console.log(error);
 			},
 		});
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={() =>
+				setIsOpen((prev) => (status == 'pending' ? prev : !prev))
+			}
+		>
 			<DialogTrigger asChild>
 				<Button className="bg-transparent text-black hover:bg-slate-300 dark:text-slate-200">
 					<Pencil className="h-5 w-5" />
@@ -78,7 +95,7 @@ function EditSpecialistDialog({ specialist }) {
 			<DialogContent className="bg-gray-100">
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Edit Specialist
+						Editar Especialista
 					</h2>
 				</DialogHeader>
 
@@ -99,8 +116,16 @@ function EditSpecialistDialog({ specialist }) {
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF]"
+							disabled={status == 'pending'}
 						>
-							Edit
+							{status == 'pending' ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Espera por favor
+								</>
+							) : (
+								'Editar'
+							)}
 						</Button>
 					</form>
 				</Form>
