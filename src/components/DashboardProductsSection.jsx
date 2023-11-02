@@ -28,7 +28,7 @@ export default function DashboardProductsSection() {
 
 				<div className="flex gap-2">
 					<CreateCategoryDialog />
-					<CreateProductDialog />{' '}
+					<CreateProductDialog />
 				</div>
 			</div>
 			<div>

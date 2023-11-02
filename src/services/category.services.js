@@ -9,7 +9,13 @@ export const editCategory = (categoryId, categoryData) =>
 export const deleteCategory = (categoryId) => () =>
 	apiInstanceWithAuth.delete(`/category/${categoryId}`);
 
-export const getCategories = () => apiInstanceWithAuth.get('/category');
+export const getCategories = async ({ limit, offset, term }) => {
+	const data = await apiInstanceWithAuth.get('/category', {
+		params: { limit, offset, term },
+	});
+
+	return data.data;
+};
 
 export const getCategory = (categoryId) =>
 	apiInstanceWithAuth.get(`/category/${categoryId}`);
