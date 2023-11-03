@@ -16,9 +16,10 @@ import { createProduct } from '@/services/product.services';
 import { useState } from 'react';
 import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
-import Image from 'next/image';
 import SpecialistForm from './SpecialistForm';
 import { useToast } from './ui/use-toast';
+import UploadImageOnModal from './UploadImageOnModal';
+import { uploadUserImage } from '@/services/user.services';
 
 const registerSchema = z.object({
 	username: z.string().min(2, 'Username must contain at least 8 characters'),
@@ -34,6 +35,7 @@ const registerSchema = z.object({
 	skinType: z.enum(['combined', 'oily', 'dry', 'balanced'], {
 		required_error: 'You need to select a skin type',
 	}),
+	image: z.any(),
 });
 
 function EditSpecialistDialog({ specialist }) {
@@ -60,24 +62,43 @@ function EditSpecialistDialog({ specialist }) {
 		},
 	});
 
-	function onSubmit(productData) {
-		mutate(productData, {
-			onSuccess: () => {
-				setIsOpen(false);
-				toast({
-					title: 'El especialista ha sido editado correctamente',
-					status: 'success',
-				});
-				form.reset();
-			},
-			onError: (error) => {
-				toast({
-					title: 'Ha ocurrido un error al editar el especialista',
-					status: 'error',
-				});
-				console.log(error);
-			},
-		});
+	function onSubmit(specialistData) {
+		mutate(
+			{ ...specialistData, image: undefined },
+			{
+				onSuccess: async () => {
+					try {
+						if (specialistData?.image) {
+							const formData = new FormData();
+							formData.append(
+								'image',
+								specialistData.image,
+								specialistData.image.name
+							);
+							await uploadUserImage(specialist._id, formData);
+						}
+						setIsOpen(false);
+						toast({
+							title: 'El especialista ha sido editado correctamente',
+						});
+						form.reset();
+					} catch (error) {
+						toast({
+							title: 'Error editando la imagen del especialista',
+							variant: 'destructive',
+						});
+						console.log(error);
+					}
+				},
+				onError: (error) => {
+					toast({
+						title: 'Ha ocurrido un error al editar el especialista',
+						status: 'error',
+					});
+					console.log(error);
+				},
+			}
+		);
 	}
 
 	return (
@@ -101,15 +122,14 @@ function EditSpecialistDialog({ specialist }) {
 
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-						<div className="flex flex-col items-center justify-center h-fit">
-							<Image
-								src={getImgSrc('user', specialist.img)}
-								width={160}
-								height={128}
-								className="w-40 h-32 rounded-lg mb-4 bg-gray-100 shadow-lg border"
-								alt={specialist.displayName}
-							/>
-						</div>
+						<UploadImageOnModal
+							form={form}
+							currentImage={
+								specialist.img != 'no-posee-imagen'
+									? getImgSrc('user', specialist.img)
+									: undefined
+							}
+						/>
 
 						<SpecialistForm form={form} />
 
