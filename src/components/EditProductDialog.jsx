@@ -16,9 +16,9 @@ import { editProduct } from '@/services/product.services';
 import { useState } from 'react';
 import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
-import Image from 'next/image';
 import ProductForm from './ProductForm';
 import { useToast } from './ui/use-toast';
+import UploadImageOnModal from './UploadImageOnModal';
 
 const editProductSchema = z.object({
 	name: z.string().min(2, 'Name must contain at least 2 characters'),
@@ -29,6 +29,7 @@ const editProductSchema = z.object({
 	skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
 		required_error: 'You need to select a skin type',
 	}),
+	image: z.any(),
 });
 
 function EditProductDialog({ product }) {
@@ -55,17 +56,37 @@ function EditProductDialog({ product }) {
 	});
 
 	function onSubmit(productData) {
-		console.log(productData);
-		mutate(productData, {
-			onSuccess: () => {
-				toast({ title: 'Product edited successfully' });
-				form.reset();
-			},
-			onError: (error) => {
-				toast({ title: 'Error editing product', variant: 'destructive' });
-				console.log(error);
-			},
-		});
+		mutate(
+			{ ...productData, image: undefined },
+			{
+				onSuccess: async () => {
+					try {
+						if (productData?.image) {
+							const formData = new FormData();
+							formData.append(
+								'image',
+								productData.image,
+								productData.image.name
+							);
+							await uploadProductImage(product._id, formData);
+						}
+						toast({ title: 'Producto editado' });
+						form.reset();
+						setIsOpen(false);
+					} catch (error) {
+						toast({
+							title: 'Error editando imagen de producto',
+							variant: 'destructive',
+						});
+						console.log(error);
+					}
+				},
+				onError: (error) => {
+					toast({ title: 'Error editando producto', variant: 'destructive' });
+					console.log(error);
+				},
+			}
+		);
 	}
 
 	return (
@@ -92,15 +113,14 @@ function EditProductDialog({ product }) {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="flex flex-col gap-2 justify-center"
 					>
-						<div className="flex flex-col items-center justify-center h-fit">
-							<Image
-								src={getImgSrc('product', product.img)}
-								width={160}
-								height={128}
-								className="w-40 h-32 rounded-lg mb-4 bg-gray-100 shadow-lg border"
-								alt={product.name}
-							/>
-						</div>
+						<UploadImageOnModal
+							form={form}
+							currentImage={
+								product.img != 'no-posee-imagen'
+									? getImgSrc('product', product.img)
+									: undefined
+							}
+						/>
 
 						<ProductForm form={form} />
 
