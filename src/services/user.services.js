@@ -16,6 +16,9 @@ export const uploadUserImage = (userId, image) =>
 export const deleteUser = (userId) => () =>
 	apiInstanceWithAuth.delete(`/user/${userId}`);
 
+export const editUser = (userId) => (userData) =>
+	apiInstanceWithAuth.patch(`/user/${userId}`, userData);
+
 export const getUsers = async ({ limit, offset, term }) => {
 	const data = await apiInstanceWithAuth.get('/user', {
 		params: { limit, offset, term },

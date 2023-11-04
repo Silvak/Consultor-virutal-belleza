@@ -12,7 +12,7 @@ import {
 import { Form } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { editProduct } from '@/services/product.services';
+import { editProduct, uploadProductImage } from '@/services/product.services';
 import { useState } from 'react';
 import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
