@@ -20,6 +20,7 @@ function DashboardSpecialistSection() {
 				term: 'SPEC_ROLE',
 			}),
 	});
+
 	return (
 		<>
 			<div className="w-full  m-auto my-6 flex justify-between items-center">

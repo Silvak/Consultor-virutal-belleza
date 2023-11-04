@@ -1,13 +1,13 @@
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { getImgSrc } from '@/lib/utils';
-import { getUser } from '@/services/user.services';
 import Image from 'next/image';
 import RecommendProduct from './RecommendProduct';
 import SkinCareHistory from './SkinCareHistory';
+import { useSession } from 'next-auth/react';
 
 function UserDialog({ user }) {
+	const { data: session, status } = useSession();
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
@@ -46,7 +46,10 @@ function UserDialog({ user }) {
 
 				<SkinCareHistory skinCareHistory={user.skinCare} />
 
-				<RecommendProduct userId={user._id} />
+				{status === 'authenticated' &&
+					session.user.user.rol == 'ESPEC_ROLE' && (
+						<RecommendProduct userId={user._id} />
+					)}
 			</DialogContent>
 		</Dialog>
 	);

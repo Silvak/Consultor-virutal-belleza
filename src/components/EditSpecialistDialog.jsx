@@ -19,10 +19,10 @@ import { getImgSrc } from '@/lib/utils';
 import SpecialistForm from './SpecialistForm';
 import { useToast } from './ui/use-toast';
 import UploadImageOnModal from './UploadImageOnModal';
-import { uploadUserImage } from '@/services/user.services';
+import { editUser, uploadUserImage } from '@/services/user.services';
 
 const registerSchema = z.object({
-	username: z.string().min(2, 'Username must contain at least 8 characters'),
+	displayName: z.string().min(2, 'Username must contain at least 8 characters'),
 	email: z.string().email(),
 	gender: z.enum(['F', 'M'], {
 		required_error: 'You need to select a gender',
@@ -43,7 +43,7 @@ function EditSpecialistDialog({ specialist }) {
 	const form = useForm({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
-			username: specialist.displayName,
+			displayName: specialist.displayName,
 			email: specialist.email,
 			age: specialist.age,
 			gender: specialist.gender,
@@ -56,7 +56,7 @@ function EditSpecialistDialog({ specialist }) {
 	const queryClient = useQueryClient();
 
 	const { mutate, status } = useMutation({
-		mutationFn: createProduct,
+		mutationFn: editUser(specialist._id),
 		onSuccess: () => {
 			queryClient.invalidateQueries('specialists');
 		},
