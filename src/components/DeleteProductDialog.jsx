@@ -14,21 +14,34 @@ import {
 import { Trash } from 'lucide-react';
 import { Button } from './ui/button';
 import { deleteProduct } from '@/services/product.services';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from './ui/use-toast';
 
 function DeleteProductDialog({ id }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const queryClient = useQueryClient();
 	const { mutate } = useMutation({
 		mutationFn: deleteProduct(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
 		},
 	});
+	const { toast } = useToast();
 
 	function handleDelete() {
 		mutate(undefined, {
-			onSuccess: () => {},
+			onSuccess: () => {
+				setIsOpen(false);
+				toast({
+					title: 'El producto ha sido eliminado correctamente',
+					status: 'success',
+				});
+			},
 			onError: (error) => {
+				toast({
+					title: 'Ha ocurrido un error al eliminar el producto',
+					status: 'error',
+				});
 				console.log(error);
 			},
 		});
@@ -44,16 +57,16 @@ function DeleteProductDialog({ id }) {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						Are you sure you want to delete this product?
+						Estas seguro de que deseas eliminar este producto?
 					</AlertDialogTitle>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel className="rounded-xl">Cancelar</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-sm px-4 py-2"
+						className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-xl"
 						onClick={handleDelete}
 					>
-						Delete
+						Eliminar
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

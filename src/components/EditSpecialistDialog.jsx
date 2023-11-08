@@ -14,13 +14,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProduct } from '@/services/product.services';
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
-import Image from 'next/image';
 import SpecialistForm from './SpecialistForm';
+import { useToast } from './ui/use-toast';
+import UploadImageOnModal from './UploadImageOnModal';
+import { editUser, uploadUserImage } from '@/services/user.services';
 
 const registerSchema = z.object({
-	username: z.string().min(2, 'Username must contain at least 8 characters'),
+	displayName: z.string().min(2, 'Username must contain at least 8 characters'),
 	email: z.string().email(),
 	gender: z.enum(['F', 'M'], {
 		required_error: 'You need to select a gender',
@@ -33,6 +35,7 @@ const registerSchema = z.object({
 	skinType: z.enum(['combined', 'oily', 'dry', 'balanced'], {
 		required_error: 'You need to select a skin type',
 	}),
+	image: z.any(),
 });
 
 function EditSpecialistDialog({ specialist }) {
@@ -40,7 +43,7 @@ function EditSpecialistDialog({ specialist }) {
 	const form = useForm({
 		resolver: zodResolver(registerSchema),
 		defaultValues: {
-			username: specialist.displayName,
+			displayName: specialist.displayName,
 			email: specialist.email,
 			age: specialist.age,
 			gender: specialist.gender,
@@ -48,28 +51,63 @@ function EditSpecialistDialog({ specialist }) {
 		},
 	});
 
+	const { toast } = useToast();
+
 	const queryClient = useQueryClient();
 
-	const { mutate } = useMutation({
-		mutationFn: createProduct,
+	const { mutate, status } = useMutation({
+		mutationFn: editUser(specialist._id),
 		onSuccess: () => {
 			queryClient.invalidateQueries('specialists');
 		},
 	});
 
-	function onSubmit(productData) {
-		mutate(productData, {
-			onSuccess: () => {
-				form.reset();
-			},
-			onError: (error) => {
-				console.log(error);
-			},
-		});
+	function onSubmit(specialistData) {
+		mutate(
+			{ ...specialistData, image: undefined },
+			{
+				onSuccess: async () => {
+					try {
+						if (specialistData?.image) {
+							const formData = new FormData();
+							formData.append(
+								'image',
+								specialistData.image,
+								specialistData.image.name
+							);
+							await uploadUserImage(specialist._id, formData);
+						}
+						setIsOpen(false);
+						toast({
+							title: 'El especialista ha sido editado correctamente',
+						});
+						form.reset();
+					} catch (error) {
+						toast({
+							title: 'Error editando la imagen del especialista',
+							variant: 'destructive',
+						});
+						console.log(error);
+					}
+				},
+				onError: (error) => {
+					toast({
+						title: 'Ha ocurrido un error al editar el especialista',
+						status: 'error',
+					});
+					console.log(error);
+				},
+			}
+		);
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={() =>
+				setIsOpen((prev) => (status == 'pending' ? prev : !prev))
+			}
+		>
 			<DialogTrigger asChild>
 				<Button className="bg-transparent text-black hover:bg-slate-300 dark:text-slate-200">
 					<Pencil className="h-5 w-5" />
@@ -78,29 +116,36 @@ function EditSpecialistDialog({ specialist }) {
 			<DialogContent className="bg-gray-100">
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Edit Specialist
+						Editar Especialista
 					</h2>
 				</DialogHeader>
 
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-						<div className="flex flex-col items-center justify-center h-fit">
-							<Image
-								src={getImgSrc('user', specialist.img)}
-								width={160}
-								height={128}
-								className="w-40 h-32 rounded-lg mb-4 bg-gray-100 shadow-lg border"
-								alt={specialist.displayName}
-							/>
-						</div>
+						<UploadImageOnModal
+							form={form}
+							currentImage={
+								specialist.img != 'no-posee-imagen'
+									? getImgSrc('user', specialist.img)
+									: undefined
+							}
+						/>
 
 						<SpecialistForm form={form} />
 
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF]"
+							disabled={status == 'pending'}
 						>
-							Edit
+							{status == 'pending' ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Espera por favor
+								</>
+							) : (
+								'Editar'
+							)}
 						</Button>
 					</form>
 				</Form>

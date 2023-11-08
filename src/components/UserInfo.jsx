@@ -6,8 +6,9 @@ import { useSession } from 'next-auth/react';
 import { getImgSrc } from '@/lib/utils';
 import { User } from 'lucide-react';
 import { getUser, uploadUserImage } from '@/services/user.services';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Input } from './ui/input';
+import { useToast } from './ui/use-toast';
 
 /**
  * The UserInfo component is a React component that displays user information, including their image,
@@ -27,12 +28,22 @@ export default function UserInfo() {
 		enabled: status == 'authenticated',
 		select: (data) => data?.data,
 	});
+	const { toast } = useToast();
 
 	async function changeImageProfile(userImage) {
-		const formData = new FormData();
-		formData.append('image', userImage, userImage.name);
-		await uploadUserImage(userData._id, formData);
-		queryClient.invalidateQueries(['user']);
+		try {
+			const formData = new FormData();
+			formData.append('image', userImage, userImage.name);
+			await uploadUserImage(userData._id, formData);
+			queryClient.invalidateQueries(['user']);
+			toast({ title: 'Foto de perfil actualizada' });
+		} catch (e) {
+			console.log(e);
+			toast({
+				title: 'Error al subir la imagen',
+				variant: 'destructive',
+			});
+		}
 	}
 
 	if (status === 'loading' || userStatus == 'pending') return null;

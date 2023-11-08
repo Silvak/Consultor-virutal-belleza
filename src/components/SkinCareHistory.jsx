@@ -9,7 +9,6 @@ import Image from 'next/image';
 import { getImgSrc } from '@/lib/utils';
 
 function SkinCareHistory({ skinCareHistory }) {
-	console.log(skinCareHistory);
 	const swiperRef = useRef();
 	return (
 		skinCareHistory.length > 0 && (

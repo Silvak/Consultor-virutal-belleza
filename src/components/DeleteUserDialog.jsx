@@ -12,12 +12,13 @@ import {
 } from './ui/alert-dialog';
 import { Trash } from 'lucide-react';
 import { Button } from './ui/button';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteUser } from '@/services/user.services';
 import { useState } from 'react';
 
 function DeleteUserDialog({ id }) {
 	const [open, setOpen] = useState(false);
+	const queryClient = useQueryClient();
 	const { mutate } = useMutation({
 		mutationFn: deleteUser(id),
 		onSuccess: () => {
@@ -44,16 +45,16 @@ function DeleteUserDialog({ id }) {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>
-						Are you sure you want to delete this user?
+						Estas seguro de que deseas eliminar este usuario?
 					</AlertDialogTitle>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel className="rounded-xl">Cancelar</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-sm px-4 py-2"
+						className="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl px-4 py-2"
 						onClick={handleDelete}
 					>
-						Delete
+						Eliminar
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

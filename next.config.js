@@ -6,7 +6,7 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'virtual--belleza-backend-mb2wm.ondigitalocean.app',
+				hostname: 'urchin-app-2-5mn4h.ondigitalocean.app',
 				port: '',
 				pathname: '/api/v1/files/**',
 			},

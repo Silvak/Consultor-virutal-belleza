@@ -12,14 +12,18 @@ import {
 import { Form } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createProduct } from '@/services/product.services';
 import { useState } from 'react';
 import UploadImageOnModal from './UploadImageOnModal';
 import SpecialistForm from './SpecialistForm';
+import { signUp, uploadUserImage } from '@/services/user.services';
+import { useToast } from './ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const registerSchema = z
 	.object({
-		username: z.string().min(2, 'Username must contain at least 8 characters'),
+		displayName: z
+			.string()
+			.min(2, 'Username must contain at least 8 characters'),
 		email: z.string().email(),
 		password: z
 			.string()
@@ -61,28 +65,40 @@ function CreateSpecialistDialog() {
 		},
 	});
 
+	const { toast } = useToast();
+
 	const queryClient = useQueryClient();
 
-	const { mutate } = useMutation({
-		mutationFn: createProduct,
+	const { mutate, status } = useMutation({
+		mutationFn: signUp,
 		onSuccess: () => {
 			queryClient.invalidateQueries('specialists');
 		},
 	});
 
 	function onSubmit(productData) {
+		console.log(productData);
 		mutate(
-			{ productData },
+			{
+				...productData,
+				rol: 'ESPEC_ROLE',
+				image: undefined,
+				passwordConfirm: undefined,
+			},
 			{
 				onSuccess: async (data) => {
 					const formData = new FormData();
 					formData.append('image', productData.image, productData.image.name);
-					await uploadProductImage(data.data._id, formData);
-					form.reset();
+					await uploadUserImage(data.data._id, formData);
+					toast({ title: 'Especialista agregado' });
 					setIsOpen(false);
 					form.reset();
 				},
 				onError: (error) => {
+					toast({
+						title: 'Error al agregar el especialista',
+						variant: 'destructive',
+					});
 					console.log(error);
 				},
 			}
@@ -90,16 +106,21 @@ function CreateSpecialistDialog() {
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={() =>
+				setIsOpen((prev) => (status == 'pending' ? prev : !prev))
+			}
+		>
 			<DialogTrigger asChild>
 				<Button className="bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl">
-					Add Specialist
+					Agregar Especialista
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="h-fit">
 				<DialogHeader className="mb-2">
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Add Specialist
+						Agregar Especialista
 					</h2>
 				</DialogHeader>
 
@@ -107,13 +128,21 @@ function CreateSpecialistDialog() {
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<UploadImageOnModal form={form} />
 
-						<SpecialistForm form={form} />
+						<SpecialistForm form={form} variant="create" />
 
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
+							disabled={status == 'pending'}
 						>
-							Add
+							{status == 'pending' ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Espera por favor
+								</>
+							) : (
+								'Agregar'
+							)}
 						</Button>
 					</form>
 				</Form>

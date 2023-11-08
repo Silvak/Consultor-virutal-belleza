@@ -12,12 +12,13 @@ import {
 import { Form } from './ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { editProduct } from '@/services/product.services';
+import { editProduct, uploadProductImage } from '@/services/product.services';
 import { useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Loader2, Pencil } from 'lucide-react';
 import { getImgSrc } from '@/lib/utils';
-import Image from 'next/image';
 import ProductForm from './ProductForm';
+import { useToast } from './ui/use-toast';
+import UploadImageOnModal from './UploadImageOnModal';
 
 const editProductSchema = z.object({
 	name: z.string().min(2, 'Name must contain at least 2 characters'),
@@ -25,10 +26,10 @@ const editProductSchema = z.object({
 		.string()
 		.min(2, 'Description must contain at least 2 characters'),
 	brand: z.string().min(2, 'Brand must contain at least 2 characters'),
-	category: z.string().min(2, 'Category must contain at least 2 characters'),
 	skinTypeProduct: z.enum(['combined', 'oily', 'dry', 'balanced'], {
 		required_error: 'You need to select a skin type',
 	}),
+	image: z.any(),
 });
 
 function EditProductDialog({ product }) {
@@ -40,13 +41,13 @@ function EditProductDialog({ product }) {
 			description: product.description,
 			brand: product.brand,
 			productSkinType: product.skinTypeProduct,
-			category: product.category,
 		},
 	});
+	const { toast } = useToast();
 
 	const queryClient = useQueryClient();
 
-	const { mutate } = useMutation({
+	const { mutate, status } = useMutation({
 		mutationFn: editProduct(product._id),
 		onSuccess: () => {
 			queryClient.invalidateQueries('products');
@@ -55,19 +56,46 @@ function EditProductDialog({ product }) {
 	});
 
 	function onSubmit(productData) {
-		console.log(productData);
-		mutate(productData, {
-			onSuccess: () => {
-				form.reset();
-			},
-			onError: (error) => {
-				console.log(error);
-			},
-		});
+		mutate(
+			{ ...productData, image: undefined },
+			{
+				onSuccess: async () => {
+					try {
+						if (productData?.image) {
+							const formData = new FormData();
+							formData.append(
+								'image',
+								productData.image,
+								productData.image.name
+							);
+							await uploadProductImage(product._id, formData);
+						}
+						toast({ title: 'Producto editado' });
+						form.reset();
+						setIsOpen(false);
+					} catch (error) {
+						toast({
+							title: 'Error editando imagen de producto',
+							variant: 'destructive',
+						});
+						console.log(error);
+					}
+				},
+				onError: (error) => {
+					toast({ title: 'Error editando producto', variant: 'destructive' });
+					console.log(error);
+				},
+			}
+		);
 	}
 
 	return (
-		<Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
+		<Dialog
+			open={isOpen}
+			onOpenChange={() =>
+				setIsOpen((prev) => (status == 'pending' ? prev : !prev))
+			}
+		>
 			<DialogTrigger asChild>
 				<Button className="bg-transparent text-black hover:bg-slate-300 dark:text-slate-200">
 					<Pencil className="h-5 w-5" />
@@ -76,7 +104,7 @@ function EditProductDialog({ product }) {
 			<DialogContent>
 				<DialogHeader>
 					<h2 className="text-[1.563rem] w-full text-center font-semibold">
-						Edit Product
+						Editar Producto
 					</h2>
 				</DialogHeader>
 
@@ -85,23 +113,30 @@ function EditProductDialog({ product }) {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="flex flex-col gap-2 justify-center"
 					>
-						<div className="flex flex-col items-center justify-center h-fit">
-							<Image
-								src={getImgSrc('product', product.img)}
-								width={160}
-								height={128}
-								className="w-40 h-32 rounded-lg mb-4 bg-gray-100 shadow-lg border"
-								alt={product.name}
-							/>
-						</div>
+						<UploadImageOnModal
+							form={form}
+							currentImage={
+								product.img != 'no-posee-imagen'
+									? getImgSrc('product', product.img)
+									: undefined
+							}
+						/>
 
 						<ProductForm form={form} />
 
 						<Button
 							type="submit"
 							className="w-full bg-[#7E8EFF] hover:bg-[#7E8EFF] rounded-xl"
+							disabled={status == 'pending'}
 						>
-							Edit
+							{status == 'pending' ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Espera por favor
+								</>
+							) : (
+								'Editar'
+							)}
 						</Button>
 					</form>
 				</Form>
